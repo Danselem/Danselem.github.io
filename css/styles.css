@@ -157,6 +157,7 @@ h6, .h6 {
 p {
   margin-top: 0;
   margin-bottom: 1rem;
+  text-align: justify;
 }
 
 abbr[title],
@@ -7205,7 +7206,7 @@ textarea.form-control-lg {
 }
 
 .m-0 {
-  margin: 0 !important;
+  margin: -10px 0 !important;
 }
 
 .m-1 {
@@ -11412,8 +11413,8 @@ section.resume-section {
   align-items: center;
   padding-left: 1rem;
   padding-right: 1rem;
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 0rem;
+  padding-bottom: 0rem;
   max-width: 75rem;
 }
 section.resume-section .resume-section-content {
@@ -11422,7 +11423,7 @@ section.resume-section .resume-section-content {
 
 @media (min-width: 768px) {
   section.resume-section {
-    min-height: 100vh;
+    min-height: 5vh;
   }
 }
 @media (min-width: 992px) {
