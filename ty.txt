@@ -1,0 +1,39 @@
+<script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+<script src="https://code.iconify.design/2/2.2.0/iconify.min.js"></script>
+
+
+
+<section class="banner-bottom-wthree py-lg-5 py-md-5 py-4" id="about">
+        <div class="container">
+            <div class="inner-sec-w3ls py-lg-5 py-4">
+                <div class="info-about text-center">
+                    <!-- <h4 class="sub-tittle-w3">About Me</h4> -->
+                    <h3 class="tittle-w3 text-uppercase mb-lg-5 mb-3">Software Stack</h3>
+
+                    <!-- <div class="subheading mb-3">Programming Languages & Tools</div> -->
+                    <ul class="list-inline dev-icons">
+                        <span class="iconify" data-icon="logos:python" style="color: #e03c31;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="logos:bash" style="color: #e03c31;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="logos:linux-tux" style="color: #e03c31;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="skill-icons:aws-dark" style="color: #e03c31;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="skill-icons:gcp-light" style="color: #e03c31;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="bi:git" style="color: #e03c31;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="logos:postgresql" style="font-size: 3em;"></span>
+                        <span class="iconify" data-icon="logos:terraform-icon" style="color: #ed872d;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="logos:numpy" style="color: #e03c31;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="simple-icons:pandas" style="color: #e03c31;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="simple-icons:scikitlearn" style="color: #ed872d;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="logos:tensorflow" style="color: #ed872d;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="simple-icons:streamlit" style="color: #ed872d;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="vscode-icons:file-type-vscode" style="color: #ed872d;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="logos:jupyter" style="color: #3b7a57;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="logos:pycharm" style="color: #ed872d;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="logos:docker-icon" style="color: #3b7a57;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="logos:kubernetes" style="color: #3b7a57;font-size: 3em;"></span>
+                        <span class="iconify" data-icon="simple-icons:prefect" style="color: #3b7a57;font-size: 3em;"></span>
+                              
+                    </ul>
+                </div>
+            </div>
+        </div>
+</section>
