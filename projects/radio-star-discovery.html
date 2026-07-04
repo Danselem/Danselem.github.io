@@ -71,8 +71,59 @@
                         <i class="fas fa-satellite-dish"></i>
                       </div>
                       <div class="ci-text">
-                        <p>This project focuses on automated detection of radio stars using machine learning classification on MeerKAT survey data. Radio stars are stars that emit strongly at radio wavelengths, and identifying them is crucial for understanding stellar activity and magnetic processes.</p>
-                        <p>The pipeline processes radio images from the MeerKAT telescope, applies feature extraction techniques, and uses trained classifiers to identify stellar sources with high reliability. This approach significantly reduces the manual effort required for source identification in large radio surveys.</p>
+                        <h3>Stellar Counterparts in the SARAO MeerKAT Galactic Plane Survey</h3>
+                        <p><strong>Large-scale catalog cross-matching · statistical reliability modeling · multi-survey data fusion</strong></p>
+                        <p><a href="https://academic.oup.com/mnras/article/540/3/2685/8151497" target="_blank" rel="noopener noreferrer">Read the paper (MNRAS, open access)</a> · <a href="https://arxiv.org/abs/2505.22139" target="_blank" rel="noopener noreferrer">arXiv version</a></p>
+                        
+                        <h4>Overview</h4>
+                        <p>This project identifies optical/stellar counterparts to radio sources detected in the SARAO MeerKAT Galactic Plane Survey (SMGPS), a 1.3 GHz radio continuum survey covering nearly half the Galactic Plane. The challenge: with 443,455 radio sources and Gaia DR3's 1.81 billion-object optical catalog, a naive nearest-neighbor match produces mostly false positives in crowded Galactic Plane fields. Solving this required building and statistically validating a multi-stage catalog cross-matching pipeline.</p>
+                        
+                        <h4>Problem: why naive cross-matching fails</h4>
+                        <p>In dense Galactic Plane fields, a basic nearest-source positional match returns a high rate of chance alignment — most SMGPS compact sources are actually background galaxies, quasars, or AGN, not stars. To quantify this, a Monte Carlo simulation was run: randomizing each radio source's position and re-matching against Gaia to measure the expected rate of spurious matches at each search radius.</p>
+                        <p><strong>Figure 1 — SMGPS flux density vs. positional uncertainty</strong></p>
+                        <p><img src="https://arxiv.org/html/2505.22139v1/extracted/6478714/plots/general_flxflx.png" alt="SMGPS flux density vs. positional uncertainty" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        <p>The result: a full-catalog positional cross-match was unreliable at every search radius tested, with reliability always below ~15%. That ruled out the naive approach entirely.</p>
+                        <p><strong>Figure 2 — Cross-match reliability vs. search radius</strong></p>
+                        <p><img src="https://arxiv.org/html/2505.22139v1/extracted/6478714/plots/srfmatchnew.png" alt="Cross-match reliability vs. search radius" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        
+                        <h4>Iteration 1: distance-limited matching</h4>
+                        <p>Next, candidate Gaia sources were restricted to specific distance bands (50 pc out to 3,500 pc), using Bayesian distance estimates that account for interstellar extinction and Gaia's variable magnitude limits. This improved reliability at very close distances (91% at 50 pc, 78% at 100 pc) but returned very few matches — just 6 stars at 50 pc, 25 at 100 pc — because so few nearby stars exist within the survey footprint. Useful, but not scalable.</p>
+                        <p><strong>Figure 3 — Reliability by distance limit</strong></p>
+                        <p><img src="https://arxiv.org/html/2505.22139v1/extracted/6478714/plots/srfmatch-3500.png" alt="Reliability by distance limit" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        
+                        <h4>Iteration 2: population-informed cross-matching</h4>
+                        <p>The approach that worked: instead of matching against <em>all</em> Gaia sources, a reference catalog of ~360,959 Gaia sources already known to belong to stellar populations associated with radio emission was built — flare stars, RS CVn/BY Dra binaries, young stellar objects, OB and Wolf-Rayet stars — compiled from literature catalogs (TESS, ZTF, ATLAS, ROSAT/eROSITA X-ray surveys, and others). Re-running the Monte Carlo reliability test against this constrained population produced a sharply better result: at a 2-arcsecond search radius, match reliability reached 94%.</p>
+                        <p><strong>Figure 4 — Cumulative match distribution, real vs. simulated</strong></p>
+                        <p><img src="https://arxiv.org/html/2505.22139v1/extracted/6478714/plots/sr100000matchclean.png" alt="Cumulative match distribution, real vs. simulated" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        
+                        <p>A second, complementary method (a case-by-case chance-alignment statistic combined with AllWISE infrared colour selection to filter out extragalactic contaminants) was used in parallel to build an independent candidate list, which was then combined with the population-informed sample.</p>
+                        
+                        <h4>Result: the color-magnitude diagram</h4>
+                        <p>Combining both selection methods yielded <strong>629 candidate stellar counterparts</strong>, 169 of which already had SIMBAD classifications — the largest radio-optical cross-match sample in the Galactic Plane to date. Extinction-corrected Gaia photometry and Bailer-Jones distance estimates were used to place each candidate on a color-magnitude diagram (CMD), which is the key diagnostic plot of the paper: it separates stellar candidates by intrinsic brightness and color, revealing which evolutionary stage/type each star belongs to.</p>
+                        <p><strong>Figure 9 — Extinction-corrected color-magnitude diagram of the 629 SMGPS-Gaia counterparts</strong></p>
+                        <p><img src="https://arxiv.org/html/2505.22139v1/extracted/6478714/plots/hrdiaga.png" alt="Extinction-corrected color-magnitude diagram" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        <p>The CMD shows the sample clusters into three main groups, all associated with known radio-emission mechanisms: massive/luminous stars (OB binaries, Wolf-Rayet systems, gamma-ray binaries — upper left of the diagram), chromospherically active binaries (RS CVn and BY Dra systems), and young stellar objects. A few one-off objects also appear, including a known cataclysmic variable (nova V603 Aql).</p>
+                        
+                        <p>As a final check on the physical plausibility of the sample, radio luminosity was compared against absolute magnitude for all 629 counterparts — a real physical association should show a correlation between the two, which is what was found (Kendall's τ = 0.46).</p>
+                        <p><strong>Figure 10 — Radio luminosity vs. absolute magnitude</strong></p>
+                        <p><img src="https://arxiv.org/html/2505.22139v1/extracted/6478714/plots/abgrl.png" alt="Radio luminosity vs. absolute magnitude" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        
+                        
+                        <p>An image example of a massive Wolf-Rayet star- HD 151932 is shown in Figure 12. The plausible emision responsible for radio emission in this type of star is wind emission. In the Figure, one can see the photometric morphology differences in radio and optical. While the optical images tend to be very bright and broad, the radio images tend to be point like and faint compared to the optical images.</p>
+                        <p><strong>Figure 12 — Image example of massive Wolf-Rayet star HD 151932</strong></p>
+                        <p><img src="https://arxiv.org/html/2505.22139v1/extracted/6478714/plots/wr/HD15193-3.png" alt="Image example of massive Wolf-Rayet star HD 151932" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        <p>On the left is a MeerKAT image wheras the right one is an optical Dark Energy Camera (DeCAPS) image. The green MeerKAT contour map is overplotted in both images using logarithmic intervals. The white circle is 10 arcsecs radius circle centred at the position of the star in both SMGPS and DECaPs.</p>
+
+                        <h4>Why this matters for applied data/ML work</h4>
+                        <p>This is a statistical cross-matching and catalog-fusion project, not a machine-learning classifier — but the underlying skills transfer directly to industry data problems:</p>
+                        <ul>
+                            <li><strong>Record linkage / entity resolution at scale</strong> — matching a ~440K-record dataset against a ~1.8B-record reference catalog using engineered features (position, distance, color) and statistical thresholds rather than exact keys</li>
+                            <li><strong>False-positive rate quantification via simulation</strong> — building a Monte Carlo null model to measure match confidence, the same logic used in fraud detection, deduplication, and anomaly detection pipelines</li>
+                            <li><strong>Iterative pipeline design under a hard constraint</strong> — abandoning the full-sample and distance-limited approaches once validation showed they didn't scale to reliable numbers, then re-engineering the candidate pool (population-informed sampling) to actually solve the problem</li>
+                            <li><strong>Multi-source data fusion</strong> — combining radio, optical (Gaia), and infrared (AllWISE) survey data with different formats, coordinate epochs, and reliability characteristics into one coherent, validated pipeline</li>
+                            <li><strong>Result validation against an independent signal</strong> — checking the final sample's physical plausibility (radio-luminosity/magnitude correlation) rather than stopping at "we found matches"</li>
+                        </ul>
+                        <p><em>Co-authored with D. A. H. Buckley, P. J. Groot, F. Cavallaro, P. A. Woudt, M. A. Thompson, M. Mutale, and M. Bietenholz. Published in Monthly Notices of the Royal Astronomical Society, Vol. 540, Issue 3 (July 2025), pp. 2685–2702.</em></p>
                       </div>
                     </div>
                   </div>
@@ -91,7 +142,7 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
-                        <p><a href="https://github.com/Danselem" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a> <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">arXiv</a></p>
+                        <p><a href="https://academic.oup.com/mnras/article/540/3/2685/8151497" target="_blank" rel="noopener noreferrer" class="btn btn-primary">MNRAS (Open Access)</a> <a href="https://arxiv.org/abs/2505.22139" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">arXiv</a> <a href="https://cdsarc.cds.unistra.fr/viz-bin/cat/J/MNRAS/540/2685" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">Vizier</a></p>
                       </div>
                     </div>
                   </div>
