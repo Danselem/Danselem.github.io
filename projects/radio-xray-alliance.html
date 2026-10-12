@@ -3,12 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Daniel Egbo — Radio - X-ray stellar Alliance</title>
+  <title>Daniel Egbo — X-ray Counterparts to MeerKAT Radio Sources</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Cross-matching radio and X-ray catalogs to identify stellar associations" />
-  <meta name="keywords" content="vcard, resposnive, retina, resume, jquery, css3, bootstrap, portfolio" />
-  <meta name="author" content="lmpixels" />
+  <meta name="description" content="X-ray Counterparts to Stellar MeerKAT Radio Sources — Cross-matching 629 stellar candidates against ROSAT and eROSITA catalogs to test the Güdel-Benz relation and study radio/X-ray coronal emission scaling laws." />
+  <meta name="keywords" content="X-ray Astronomy, Radio Astronomy, MeerKAT, ROSAT, eROSITA, Stellar Counterparts, Güdel-Benz Relation, Catalog Cross-Matching, SVM, Astropy, UCT, SAAO" />
+  <meta name="author" content="Daniel Egbo" />
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="X-ray Counterparts to MeerKAT Radio Sources — Daniel Egbo" />
+  <meta property="og:description" content="Testing the Güdel-Benz relation by cross-matching MeerKAT stellar candidates with ROSAT and eROSITA X-ray catalogs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://danselem.github.io/projects/radio-xray-alliance.html" />
+  <meta property="og:image" content="https://danselem.github.io/img/Daniel_photo.jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="X-ray Counterparts to MeerKAT Radio Sources — Daniel Egbo" />
+  <meta name="twitter:description" content="Cross-matching MeerKAT radio sources with ROSAT/eROSITA X-ray data to study stellar coronal emission and the Güdel-Benz relation." />
+  <meta name="twitter:image" content="https://danselem.github.io/img/Daniel_photo.jpeg" />
+  
   <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="canonical" href="https://danselem.github.io/projects/radio-xray-alliance.html" />
   <link rel="stylesheet" href="../css/normalize.css" type="text/css">
   <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
   <link rel="stylesheet" href="../css/owl.carousel.css" type="text/css">
@@ -38,6 +55,7 @@
           <div class="site-nav mobile-menu-hide">
             <ul class="leven-classic-menu site-main-menu">
               <li class="menu-item"><a href="../index.html">About Me</a></li>
+              <li class="menu-item"><a href="../research.html">Research</a></li>
               <li class="menu-item"><a href="../publications.html">Publications</a></li>
               <li class="menu-item current-menu-item"><a href="../projects.html">Projects</a></li>
               <li class="menu-item"><a href="../awards.html">Awards</a></li>
@@ -52,7 +70,7 @@
         <div id="main-content" class="single-page-content">
           <div id="primary" class="content-area">
             <div class="page-title" style="text-align: center; padding: 40px 70px;">
-              <h1>Radio - X-ray stellar Alliance</h1>
+              <h1>X-ray Counterparts to Stellar MeerKAT Galactic-Plane Radio Sources</h1>
             </div>
             <div id="content" class="page-content site-content single-post" role="main">
               <div class="row">
@@ -71,8 +89,56 @@
                         <i class="fas fa-star"></i>
                       </div>
                       <div class="ci-text">
-                        <p>This project cross-matches radio and X-ray catalogs to identify stellar associations and characterize multiwavelength emission from coronal activity.</p>
-                        <p>By combining data from radio and X-ray observatories, we identify stellar sources that emit across both wavelength regimes. This multiwavelength approach provides insights into coronal heating mechanisms, stellar magnetic activity, and the relationship between radio and X-ray emission in different stellar types.</p>
+                        <h3>X-ray Counterparts to Stellar MeerKAT Galactic-Plane Radio Sources</h3>
+                        <p><strong>Multi-survey catalog cross-matching · statistical validation · astrophysical scaling-law fitting</strong></p>
+                        <p>Published in <em>Astronomy & Astrophysics</em>, Vol. 707, A193 (2026) · <a href="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25.html" target="_blank" rel="noopener noreferrer">Read the paper (open access)</a> · DOI: 10.1051/0004-6361/202556983</p>
+                        
+                        <h4>Overview</h4>
+                        <p>This is a follow-up to the SMGPS stellar-counterpart project: having identified 629 candidate stars as optical counterparts to MeerKAT radio sources, this paper cross-matches those stars against two soft X-ray survey catalogs — ROSAT (RASS) and eROSITA (eRASS1) — to test whether their radio and X-ray emission follows the <strong>Güdel–Benz relation (GBR)</strong>, a well-established scaling law linking coronal X-ray output to non-thermal radio emission in magnetically active stars.</p>
+                        
+                        <h4>Method: cross-matching against two X-ray catalogs</h4>
+                        <p>Using the Gaia identifiers of the 629 SMGPS stellar candidates, the X-ray content of RASS and eRASS1 was searched via the CDS VizieR database, using a 3-arcsecond matching radius. A Monte Carlo simulation (randomizing X-ray source positions in Galactic longitude) estimated the contamination rate from chance alignment: ~6 expected false positives out of 131 eRASS1 matches, and ~2 out of 47 RASS matches — about 5% for both, confirmed as negligible.</p>
+                        <p><strong>Result: 137 stars with confirmed radio, optical, and X-ray detections</strong> — 47 from RASS, 131 from eRASS1, with 41 sources detected in both.</p>
+                        <p><strong>Figure 1 — Sky positions of all matched sources in Galactic coordinates</strong></p>
+                        <p><img src="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25-fig1_small.jpg" alt="Sky positions of all matched sources in Galactic coordinates" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        <p><strong>Figure 2 — Positional offsets between SMGPS and X-ray detections</strong></p>
+                        <p><img src="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25-fig2_small.jpg" alt="Positional offsets between SMGPS and X-ray detections" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        
+                        <h4>Cross-validating the two X-ray surveys</h4>
+                        <p>Where RASS and eRASS1 overlap (41 common sources), their measured X-ray fluxes correlated strongly (Pearson r = 0.905), with most sources clustering within a factor of two of the 1:1 relation — evidence that flux differences are mostly instrumental/calibration effects rather than intrinsic stellar variability.</p>
+                        <p><strong>Figure 3 — RASS vs. eRASS1 flux comparison for the 41 common detections</strong></p>
+                        <p><img src="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25-fig3_small.jpg" alt="RASS vs. eRASS1 flux comparison" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        
+                        <h4>Stellar population and color-magnitude diagram</h4>
+                        <p>Cross-matching all 137 sources against SIMBAD revealed a diverse population spanning main-sequence, pre-main-sequence, and evolved stars, dominated by K- and M-type young stellar objects, with a handful of interacting binaries (RS CVn, eclipsing, spectroscopic).</p>
+                        <p><strong>Figure 4 — Gaia color-magnitude diagram of the 137 radio/X-ray-emitting stars, classified by stellar population</strong></p>
+                        <p><img src="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25-fig4_small.jpg" alt="Gaia color-magnitude diagram" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        
+                        <h4>Distinguishing coherent from incoherent radio emission</h4>
+                        <p>A radio-brightness temperature (T<sub>B</sub>) was computed for every star. T<sub>B</sub> separates coherent from incoherent emission at a threshold of 10¹² K. Nearly the whole sample fell below that threshold — consistent with <strong>incoherent gyrosynchrotron emission</strong> — with two clear outliers: <strong>AX J1600.9–5142 (Apep)</strong>, a colliding-wind Wolf-Rayet binary, at (4.8 ± 1.5) × 10¹² K (coherent regime), and <strong>HD 124831</strong>, a G3V binary, at the unusually low end at (8 ± 1) × 10⁶ K.</p>
+                        <p><strong>Figure 5 — Radio-brightness temperature vs. Gaia color, by stellar type</strong></p>
+                        <p><img src="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25-fig5_small.jpg" alt="Radio-brightness temperature vs. Gaia color" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        
+                        <h4>Testing the Güdel–Benz relation</h4>
+                        <p>Radio and X-ray luminosities were compared against the canonical GBR fit from Williams et al. (2014). Both fitted power-law slopes came out close to the canonical exponent of 0.73 (RASS: 0.8 ± 0.1, Kendall's τ = 0.576; eRASS1: 0.68 ± 0.04, τ = 0.626) — the underlying scaling holds — but the sample sits systematically below the canonical normalization, i.e. stars appear over-luminous in radio relative to X-rays compared to earlier studies at higher frequencies (5–9 GHz vs. this survey's 1.3 GHz).</p>
+                        <p><strong>Figure 6 — Full radio/X-ray luminosity comparison against literature GBR samples</strong></p>
+                        <p><img src="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25-fig6_small.jpg" alt="Full radio/X-ray luminosity comparison" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        <p><strong>Figure 7 — Fitted power laws for RASS (left) and eRASS1 (right) separately</strong></p>
+                        <p><img src="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25-fig7_small.jpg" alt="Fitted power laws for RASS and eRASS1" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        <p>The likely explanation is a sensitivity effect: at 1.3 GHz, only the most radio-active/flaring stars clear the detection threshold, which selectively boosts the radio side of the ratio for stars that do get detected — not a break in the underlying physics.</p>
+                        
+                        <h4>Extending to bolometric luminosity</h4>
+                        <p>Radio and X-ray luminosity were each fit against bolometric luminosity. Early-type (massive) stars didn't follow a consistent trend and were excluded, since their X-rays come from wind shocks rather than coronae. For the remaining late-type stars, a fit of L<sub>X</sub> = 10<sup>(4.9±1.3)</sup> · L<sub>bol</sub><sup>(0.76±0.04)</sup> was obtained, with most stars clustering around log(L<sub>X</sub>/L<sub>bol</sub>) ≈ −3 — consistent with the coronal saturation limit seen in rapidly rotating, magnetically active stars.</p>
+                        <p><strong>Figure 8 — Radio luminosity vs. bolometric luminosity</strong></p>
+                        <p><img src="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25-fig8_small.jpg" alt="Radio luminosity vs. bolometric luminosity" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        <p><strong>Figure 9 — X-ray luminosity vs. bolometric luminosity</strong></p>
+                        <p><img src="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25-fig9_small.jpg" alt="X-ray luminosity vs. bolometric luminosity" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        <p><strong>Figure 10 — X-ray luminosity vs. bolometric luminosity for eRASS1 stars, color-coded by log(L<sub>X</sub>/L<sub>bol</sub>) to separate coronal from wind-driven emitters</strong></p>
+                        <p><img src="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25-fig10_small.jpg" alt="X-ray luminosity vs. bolometric luminosity color-coded" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                        
+                        <h4>Conclusions</h4>
+                        <p>The GBR appears to act as an upper envelope rather than a tight correlation for stars detected at 1.3 GHz — most sources are over-luminous in radio relative to what the canonical relation predicts, an effect attributed to the survey's detection threshold rather than new physics. Early-type stars were also found to sit systematically below the log(L<sub>X</sub>/L<sub>bol</sub>) ≈ −3 relation typically seen for later-type, coronally active stars. Future eROSITA data releases (DR2/DR3) and the SKA are noted as the next steps for deeper, more statistically robust versions of this analysis.</p>
+                        <p><em>Co-authored with P. J. Groot, D. A. H. Buckley, J. Robrade, A. D. Schwope, S. Freund, P. C. Schneider, and B. Stelzer.</em></p>
                       </div>
                     </div>
                   </div>
@@ -91,7 +157,7 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
-                        <p><a href="https://github.com/Danselem" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a> <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">arXiv</a></p>
+                        <p><a href="https://www.aanda.org/articles/aa/full_html/2026/03/aa56983-25/aa56983-25.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary">A&A (Open Access)</a> <a href="https://doi.org/10.1051/0004-6361/202556983" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">DOI</a> <a href="https://cdsarc.cds.unistra.fr/viz-bin/cat/J/A+A/707/A193" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">Vizier</a></p>
                       </div>
                     </div>
                   </div>
