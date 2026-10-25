@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Daniel Egbo — Nigeria English Accent Audio Data Collection</title>
+  <title>Daniel Egbo — Nigerian English Accent ASR Fine-Tuning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Audio datasets for Nigerian English accent ASR fine-tuning" />
+  <meta name="description" content="NeMo FastConformer fine-tuning on a Nigerian-English speech corpus: validation WER 55.1% to 28.1%" />
   <meta name="keywords" content="vcard, resposnive, retina, resume, jquery, css3, bootstrap, portfolio" />
   <meta name="author" content="lmpixels" />
   <link rel="shortcut icon" href="../favicon.ico">
@@ -52,7 +52,7 @@
         <div id="main-content" class="single-page-content">
           <div id="primary" class="content-area">
             <div class="page-title" style="text-align: center; padding: 40px 70px;">
-              <h1>Nigeria English Accent Audio Data Collection</h1>
+              <h1>Nigerian English Accent ASR Fine-Tuning</h1>
             </div>
             <div id="content" class="page-content site-content single-post" role="main">
               <div class="row">
@@ -71,8 +71,111 @@
                         <i class="fas fa-language"></i>
                       </div>
                       <div class="ci-text">
-                        <p>Curated and processed audio datasets for Nigerian English accent, supporting ASR model fine-tuning for improved speech recognition accuracy.</p>
-                        <p>Nigerian English is one of the most widely spoken English varieties in Africa, yet it is underrepresented in ASR training data. This project collects, curates, and processes audio samples of Nigerian English speech, with accurate transcriptions. The dataset is used to fine-tune models like Whisper and Wav2Vec2, significantly improving recognition accuracy for Nigerian speakers.</p>
+                        <p>Nigerian English is one of the most widely spoken English varieties in Africa, yet it is underrepresented in ASR training data. This project pairs a curated, transcribed Nigerian-English speech corpus with an end-to-end fine-tuning pipeline for NVIDIA&rsquo;s FastConformer CTC acoustic model, built with NeMo on Google Colab.</p>
+                        <p>The workflow covers the full training lifecycle: dataset conversion and manifests, a corpus-specific tokenizer, a from-scratch baseline that was diagnosed when it failed, fine-tuning of a pretrained model, experiment tracking, and publishing the resulting checkpoint to the Hugging Face Hub.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Dataset &amp; Split</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-database"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>The corpus is <code>Alpha-Proxima/combined-audio</code>, a privately hosted Hugging Face dataset of <strong>1,608 transcribed Nigerian-English utterances</strong> with text and duration metadata. It is split 80/20 into training and validation sets with a fixed seed (42). A custom converter turns each Hugging Face sample into a WAV file and a NeMo JSONL manifest entry (<code>audio_filepath</code>, <code>duration</code>, <code>text</code>); NeMo&rsquo;s duration filtering then removes clips outside the configured bounds. The final training run loaded <strong>1,245 files (2.90 hours)</strong> of training audio and <strong>315 files (0.74 hours)</strong> for validation.</p>
+                        <p>A SentencePiece BPE tokenizer with a <strong>512-token vocabulary</strong> is trained on the transcript corpus using NeMo&rsquo;s <code>process_asr_text_tokenizer.py</code>, so the model&rsquo;s output units match the vocabulary of Nigerian-English speech rather than a generic English tokenizer.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Training</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-microchip"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Two training runs document the path to a working model. The first was a from-scratch <code>EncDecCTCModelBPE</code> (FastConformer-CTC-BPE configuration, 115 M trainable parameters) with the custom tokenizer. It did not converge: validation WER stayed pinned at 100% and the model emitted empty predictions throughout training. That failure was analysed rather than hidden, and the diagnostics are summarised below.</p>
+                        <p>The working model instead fine-tunes the NGC pretrained <code>stt_en_fastconformer_ctc_large</code> checkpoint on the accent data with PyTorch Lightning and NeMo&rsquo;s experiment manager: batch size 4, AdamW (learning rate 5e-4, weight decay 0.001), cosine annealing with 2,000 warmup steps, SpecAugment, and 16-bit mixed precision on a single Colab GPU. Checkpoints are selected by minimum validation WER with early stopping (patience 3), and runs are logged to Weights &amp; Biases (project <code>naija_en_asr</code>).</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Results</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon" style="margin-bottom: 18px;">
+                      <div class="ci-icon">
+                        <i class="fas fa-chart-line"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Validation WER fell from <strong>55.1% at epoch 0 to 28.1% at epoch 12</strong>, improving at every saved checkpoint (0.551 &rarr; 0.430 &rarr; 0.377 &rarr; 0.360 &rarr; 0.348 &rarr; 0.334 &rarr; 0.304 &rarr; 0.288 &rarr; 0.281); training stopped after 15 epochs. The best checkpoint &mdash; a 463 MB NeMo archive &mdash; was pushed to the Hugging Face Hub as <code>oegbo/fastconformer_enng</code> and reloaded from the Hub for a further two epochs of continued fine-tuning.</p>
+                      </div>
+                    </div>
+                    <div class="info-block-w-icon" style="margin-bottom: 18px;">
+                      <div class="ci-text">
+                        <p style="margin-bottom: 4px;"><strong>REF:</strong> thank you so much that is it they my friends please thank you god please how can i locate</p>
+                        <p style="margin-bottom: 0;"><strong>PRED:</strong> so much that is it my friends please thank you god please how can i locate</p>
+                      </div>
+                    </div>
+                    <div class="info-block-w-icon">
+                      <div class="ci-text">
+                        <p style="margin-bottom: 4px;"><strong>REF:</strong> dad the funny part of it is that when i offered to give them money to buy something</p>
+                        <p style="margin-bottom: 0;"><strong>PRED:</strong> that funy pa of if you when i start to give you money to buy something</p>
+                        <p style="font-size: 0.85em; color: #555; margin-top: 8px;">Reference/hypothesis pairs copied verbatim from the NeMo validation log, lowercased and punctuated as logged; spontaneous speech still produces word errors.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Diagnosing the Failed Baseline</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-bug"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>The notebook documents the analysis behind the empty predictions: a 128-token vocabulary from an earlier tokenizer build that was too small for the corpus&rsquo;s linguistic diversity, an undertrained model, learning-rate and optimisation settings, and data-quality checks on the audio and transcriptions. Each is paired with a concrete next step &mdash; a larger vocabulary (the final tokenizer uses 512 tokens), longer training, and a reviewed learning-rate schedule.</p>
                       </div>
                     </div>
                   </div>
@@ -91,7 +194,7 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
-                        <p><a href="https://github.com/Danselem/african_accent" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a></p>
+                        <p><a href="https://colab.research.google.com/drive/1OCSUpFcSF9R3uMWuSbsV1LuieeWNvxaH?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Colab Notebook</a> <a href="https://huggingface.co/oegbo/fastconformer_enng" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">HF Model</a></p>
                       </div>
                     </div>
                   </div>
