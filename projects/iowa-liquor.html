@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Daniel Egbo — Iowa Liquor Sales Analytics</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Full analytics pipeline for Iowa liquor sales data" />
+  <meta name="description" content="Data engineering capstone: Kestra-orchestrated ingestion from BigQuery public data into GCS/BigQuery, transformed with dbt, provisioned with Terraform" />
   <meta name="keywords" content="vcard, resposnive, retina, resume, jquery, css3, bootstrap, portfolio" />
   <meta name="author" content="lmpixels" />
   <link rel="shortcut icon" href="../favicon.ico">
@@ -38,6 +38,8 @@
           <div class="site-nav mobile-menu-hide">
             <ul class="leven-classic-menu site-main-menu">
               <li class="menu-item"><a href="../index.html">About Me</a></li>
+              <li class="menu-item"><a href="../research.html">Research</a></li>
+              <li class="menu-item"><a href="../engineering.html">AI Engineer</a></li>
               <li class="menu-item"><a href="../publications.html">Publications</a></li>
               <li class="menu-item current-menu-item"><a href="../projects.html">Projects</a></li>
               <li class="menu-item"><a href="../awards.html">Awards</a></li>
@@ -71,8 +73,120 @@
                         <i class="fas fa-chart-line"></i>
                       </div>
                       <div class="ci-text">
-                        <p>Full analytics pipeline for Iowa liquor sales data including ETL, exploratory analysis, dashboards, and sales forecasting.</p>
-                        <p>This project analyzes the Iowa liquor sales dataset to uncover trends in consumer behavior, seasonal patterns, and vendor performance. The pipeline covers data cleaning, feature engineering, exploratory visualization, and time-series forecasting using SARIMA and Prophet models. Interactive dashboards built with Plotly/Dash allow stakeholders to explore sales by category, store, and geography.</p>
+                        <p>Data engineering capstone for the Data Engineering Zoomcamp: an end-to-end pipeline that takes the public Iowa liquor sales dataset from BigQuery open data through a GCS/BigQuery lakehouse and into a dbt analytics layer. The stack is Terraform for infrastructure, Kestra for orchestration, dbt for SQL transformations, Docker for local services, and GitHub Actions for CI &mdash; with an architecture diagram in <code>docs/workflow.md</code> and a uv + Makefile developer workflow.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Dataset</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-database"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Sourced from <code>bigquery-public-data.iowa_liquor_sales.sales</code> on Google BigQuery &mdash; an open public table containing every wholesale purchase of liquor in the State of Iowa by retailers for sale to individuals since January 2012, collected by the Alcoholic Beverages Division of the Iowa Department of Commerce. The same data is published as open data by the State of Iowa.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Ingestion (Kestra)</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-project-diagram"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Two Kestra flows implement ingestion: <code>01_gcp_iowa_liquor</code> is parameterized by dataset, year, and month for ad-hoc backfills, while <code>02_gcp_iowa_liquor_scheduled</code> runs the same pipeline on a monthly schedule. A Python task in a Kestra <code>pydata</code> container queries <code>bigquery-public-data.iowa_liquor_sales.sales</code>, derives <code>zip_code_int</code> and longitude/latitude from the <code>store_location</code> geography column, and filters out records without a location.</p>
+                        <p>The result is written as CSV to a GCS bucket, loaded into a BigQuery external table, given an MD5 composite <code>unique_row_id</code> (invoice + date + store + zip + vendor), and merged with <code>MERGE ... WHEN NOT MATCHED THEN INSERT</code> into a consolidated <code>iowa_liquor</code> table &mdash; making re-runs idempotent and duplicate-free. Execution files are purged afterwards, and <code>make kestra</code> brings orchestration up locally with docker compose.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Infrastructure (Terraform)</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-cloud"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>The Terraform configuration (<code>terraform/</code>) uses the Google provider to provision the GCS bucket that stages ingested files &mdash; with a lifecycle rule aborting incomplete multipart uploads &mdash; and the BigQuery dataset that holds the raw table and dbt outputs. Project, region, and credentials are parameterized through variables.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Transformations (dbt)</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-th"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>The <code>liquor_data</code> dbt project (with the <code>dbt_utils</code> and <code>codegen</code> packages) transforms the consolidated table through one staging model and twelve core models. The staging view <code>stg_iowa_liquor</code> de-duplicates on invoice and date with a <code>row_number</code>, generates a surrogate <code>sales_id</code>, applies type-safe casts to the numeric fields, supports a 100-row <code>is_test_run</code> guard, and is documented column by column in <code>schema.yml</code>.</p>
+                        <p>Time-series and geographic analytics: monthly sales with month-over-month growth computed with <code>lag()</code> window functions, a four-month rolling-average sales forecast, and monthly cost-versus-retail price trajectories per item. County revenue rankings and per-store revenue aggregated to latitude/longitude with BigQuery geography functions (<code>ST_X</code>/<code>ST_Y</code>) make the results mappable.</p>
+                        <p>Commercial analytics: item-level price elasticity estimated as the change in bottles sold per unit change in average retail price, store segmentation into sales and volume quartiles with <code>ntile(4)</code>, bought-together product pairs from an invoice-level self-join (top 20), ranked top stores and categories, most popular bottle sizes, and low-access &ldquo;liquor deserts&rdquo; &mdash; counties with fewer than five stores. Every model states its business question in a SQL header comment, is materialized as a table, and is built through <code>dbt build</code>.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Quality &amp; CI/CD</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-code-branch"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>A GitHub Actions workflow (<code>.github/workflows/ci-cd.yml</code>) defines the CI pipeline for pushes and pull requests on <code>main</code> and <code>develop</code>: Python 3.10 with uv, dependency installation, then <code>dbt debug</code>, <code>dbt deps</code>, and <code>dbt build</code> with a full refresh, followed by the data-loading step (<code>make load</code>). The end-to-end workflow, including a Mermaid architecture diagram, is documented in <code>docs/workflow.md</code>.</p>
                       </div>
                     </div>
                   </div>
@@ -91,7 +205,7 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
-                        <p><a href="https://github.com/Danselem/iowa-liquor" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a></p>
+                        <p><a href="https://github.com/Danselem/iowa_liquor" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a> <a href="https://console.cloud.google.com/bigquery?p=bigquery-public-data&amp;d=iowa_liquor_sales&amp;t=sales&amp;page=table" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">BigQuery Public Table</a></p>
                       </div>
                     </div>
                   </div>
