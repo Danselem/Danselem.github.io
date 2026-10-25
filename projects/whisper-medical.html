@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Daniel Egbo — Medical Speech Recognition using Whisper</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Fine-tuning OpenAI's Whisper for accurate medical terminology transcription" />
+  <meta name="description" content="Fine-tuning OpenAI Whisper-small for medical-domain speech recognition with a three-way split and held-out WER evaluation" />
   <meta name="keywords" content="vcard, resposnive, retina, resume, jquery, css3, bootstrap, portfolio" />
   <meta name="author" content="lmpixels" />
   <link rel="shortcut icon" href="../favicon.ico">
@@ -38,6 +38,8 @@
           <div class="site-nav mobile-menu-hide">
             <ul class="leven-classic-menu site-main-menu">
               <li class="menu-item"><a href="../index.html">About Me</a></li>
+              <li class="menu-item"><a href="../research.html">Research</a></li>
+              <li class="menu-item"><a href="../engineering.html">AI Engineer</a></li>
               <li class="menu-item"><a href="../publications.html">Publications</a></li>
               <li class="menu-item current-menu-item"><a href="../projects.html">Projects</a></li>
               <li class="menu-item"><a href="../awards.html">Awards</a></li>
@@ -71,11 +73,169 @@
                         <i class="fas fa-microphone"></i>
                       </div>
                       <div class="ci-text">
-                        <p>Fine-tuned OpenAI's Whisper model on medical dictation data for accurate transcription of clinical terminology and radiology reports.</p>
-                        <p>Medical speech recognition presents unique challenges due to specialized terminology, complex drug names, and varying accents. This project fine-tunes Whisper on curated medical dictation datasets, achieving high accuracy for clinical documentation, radiology reporting, and medical note-taking applications.</p>
+                        <p>End-to-end fine-tuning of OpenAI Whisper-small for medical-domain speech recognition. General-purpose ASR models handle everyday English well but degrade on symptom descriptions and medical vocabulary, so this project builds the full path: dataset design, a leak-free train/validation/test split, W&amp;B-tracked fine-tuning, checkpoint publication to the Hugging Face Hub &mdash; and, most importantly, a held-out evaluation harness that measures the result against the stock baseline under an identical decoding protocol.</p>
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Data &amp; Split</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-database"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Built on the public PaulMooney Medical ASR dataset on Hugging Face. The source partitions are misleadingly named &mdash; the bulk of the audio (5,895 clips) sits in the <em>test</em> split &mdash; so the data was restructured into a three-way split with clear semantics: 5,395 clips for training, 381 for validation (used only for checkpoint selection), and a 500-clip test set held untouched until final scoring (seed 42).</p>
+                        <p>Source audio is 44.1 kHz stereo; everything is resampled to 16 kHz mono before it reaches the model &mdash; the Whisper input contract, enforced identically in training and evaluation.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Training</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-cogs"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Fine-tuned with the Hugging Face <code>Seq2SeqTrainer</code>: 1,000 steps (&asymp;6 epochs), learning rate 1e-5 with linear warmup, batch size 32, fp16 mixed precision, and gradient checkpointing. Validation WER is computed every 100 steps and the best checkpoint is kept automatically.</p>
+                        <p>The run is tracked in Weights &amp; Biases, and the final checkpoint is published on the Hugging Face Hub as <strong>oegbo/whisper-small-medical-v2</strong>, fine-tuned from <code>openai/whisper-small</code>.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <p><img src="../img/project/whisper-medical/train-loss.png" alt="Training loss over 1,000 fine-tuning steps" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                  <p style="text-align: center; font-size: 0.85em; color: #555;">Training loss over 1,000 steps</p>
+                  <p><img src="../img/project/whisper-medical/eval-loss.png" alt="Validation loss per evaluation step" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                  <p style="text-align: center; font-size: 0.85em; color: #555;">Validation loss per evaluation step</p>
+                  <p><img src="../img/project/whisper-medical/eval-wer.png" alt="Validation WER per evaluation step" style="max-width: 50%; height: auto; display: block; margin: 10px auto;"></p>
+                  <p style="text-align: center; font-size: 0.85em; color: #555;">Validation WER per evaluation step (drives best-checkpoint selection)</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Evaluation</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>The held-out test set (all 500 clips, none used for training or model selection) is scored for both the stock baseline and the fine-tuned model under an identical, constrained decoding protocol: fixed English language, no-repeat n-gram, and repetition penalty applied to both models &mdash; no exclusions of any clip.</p>
+                        <p>The harness caught two real problems during development, both fixed before the reported numbers: an input-pipeline bug, where native 44.1 kHz audio was initially fed to a 16 kHz-assuming pipeline and produced meaningless scores; and a repetition-loop hallucination from unconstrained decoding that dominated one model&rsquo;s aggregate WER. Full diagnosis is in the notebook.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Results</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-chart-bar"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Normalized WER (lowercase, punctuation-stripped &mdash; standard ASR reporting practice), 500 held-out clips: <strong>stock baseline 11.0% &rarr; fine-tuned 5.4%, a 51% relative reduction</strong>. Raw WER: 20.6% &rarr; 12.7%.</p>
+                        <table class="table table-bordered" style="max-width: 480px;">
+                          <thead>
+                            <tr><th>Model</th><th>Raw WER</th><th>Normalized WER</th></tr>
+                          </thead>
+                          <tbody>
+                            <tr><td>openai/whisper-small (stock)</td><td>20.6%</td><td>11.0%</td></tr>
+                            <tr><td>Fine-tuned (v2)</td><td>12.7%</td><td>5.4%</td></tr>
+                          </tbody>
+                        </table>
+                        <p>Per-clip analysis shows the fine-tuned model improving on most clips. A small number of test clips where both models produce similar text that differs from the reference suggest noise in the source dataset; these were retained in scoring for both models.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Transcription Examples</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon" style="margin-bottom: 18px;">
+                      <div class="ci-text">
+                        <p style="margin-bottom: 4px;"><strong>REF:</strong> I have a foot ache after running 500m with my running shoes.</p>
+                        <p style="margin-bottom: 4px;"><strong>BASE:</strong> I have a <span class="text-danger">food tech</span> after running <span class="text-danger">500 meter</span> with my running shoes.</p>
+                        <p style="margin-bottom: 0;"><strong>FT:</strong> I have a foot ache after running 500m with my running shoes.</p>
+                      </div>
+                    </div>
+                    <div class="info-block-w-icon" style="margin-bottom: 18px;">
+                      <div class="ci-text">
+                        <p style="margin-bottom: 4px;"><strong>REF:</strong> I have found some issues in my skin and tried to use cream but it doesn&rsquo;t get better.</p>
+                        <p style="margin-bottom: 4px;"><strong>BASE:</strong> I have found some issues in my <span class="text-danger">screen</span> and tried to use <span class="text-danger">screen</span> but it doesn&rsquo;t get better.</p>
+                        <p style="margin-bottom: 0;"><strong>FT:</strong> I have found some issues in my skin and tried to use cream but it doesn&rsquo;t get better.</p>
+                      </div>
+                    </div>
+                    <div class="info-block-w-icon" style="margin-bottom: 18px;">
+                      <div class="ci-text">
+                        <p style="margin-bottom: 4px;"><strong>REF:</strong> I got a divorce last year and I just can&rsquo;t stop dwelling on how to get revenge on my ex husband.</p>
+                        <p style="margin-bottom: 4px;"><strong>BASE:</strong> I got a divorce last year and just can&rsquo;t stop dwelling on how to get revenge <span class="text-danger">my</span> ex-husband.</p>
+                        <p style="margin-bottom: 0;"><strong>FT:</strong> I got a divorce last year and i just can&rsquo;t stop dwelling on how to get revenge on my ex husband.</p>
+                      </div>
+                    </div>
+                    <div class="info-block-w-icon">
+                      <div class="ci-text">
+                        <p style="margin-bottom: 4px;"><strong>REF:</strong> I can&rsquo;t do anything I feel a weak in my body</p>
+                        <p style="margin-bottom: 4px;"><strong>BASE:</strong> Everything I felt in my <span class="text-danger">blood</span>.</p>
+                        <p style="margin-bottom: 0;"><strong>FT:</strong> Everything I felt in my body</p>
+                        <p style="font-size: 0.85em; color: #555; margin-top: 8px;">Neither model recovers this reference; clips like this are retained in the WER for both models &mdash; no exclusions.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <p style="font-size: 0.85em; color: #555;">Verbatim outputs from the 500-clip held-out evaluation (the notebook prints the first ten clips; four representative examples shown here).</p>
                 </div>
               </div>
               <div class="row">
@@ -91,7 +251,7 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
-                        <p><a href="https://github.com/Danselem/whisper_transcribe" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a></p>
+                        <p><a href="https://huggingface.co/oegbo/whisper-small-medical-v2" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Hugging Face Model</a> <a href="https://colab.research.google.com/drive/1nw1kA0WPXi2i3_TA3CrMYZguCl6lkII0?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">Colab Notebook</a> <a href="https://huggingface.co/datasets/yashtiwari/PaulMooney-Medical-ASR-Data" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">Dataset</a></p>
                       </div>
                     </div>
                   </div>

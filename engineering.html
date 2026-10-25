@@ -267,12 +267,12 @@
                   <div class="card" style="padding: 20px; border: 1px solid #eee; border-radius: 6px; min-height: 280px;">
                     <h4 style="color: #f75023; font-weight: 600; margin-bottom: 10px;">Speech AI: Whisper Fine-Tuning + Low-Resource Accent Data</h4>
                     <p style="line-height: 1.5; margin-bottom: 15px;">
-                      Whisper fine-tuning for clinical terminology and radiology reporting, paired with
-                      curated Nigerian-English accent audio datasets for low-resource ASR. Covers
-                      dataset curation, preprocessing, fine-tuning, and evaluation.
+                      End-to-end Whisper-small fine-tuning for medical-domain speech: data preparation,
+                      three-way split, W&amp;B-tracked training, and a held-out evaluation harness
+                      (11.0% &rarr; 5.4% normalized WER on 500 untouched clips). Paired with curated
+                      Nigerian-English accent audio datasets for low-resource ASR.
                     </p>
-                    <p style="font-size: 0.85em; color: #555;"><strong>Stack:</strong> PyTorch · Hugging Face · Whisper ASR · Python</p>
-                    <!-- TODO(CV): add WER baseline→result + eval subset + dataset hours, or keep scope-only honestly. Eval details live in repo, not as headline %. -->
+                    <p style="font-size: 0.85em; color: #555;"><strong>Stack:</strong> PyTorch · Hugging Face · Whisper ASR · Weights &amp; Biases · Python</p>
                     <p><a href="projects/whisper-medical.html" class="btn btn-primary btn-sm">Read More</a> <a href="projects/ng-accent-audio.html" class="btn btn-outline-primary btn-sm">Accent Data</a></p>
                   </div>
                 </div>
