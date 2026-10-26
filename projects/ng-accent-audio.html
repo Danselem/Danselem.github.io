@@ -220,6 +220,29 @@
                 <div class="col-xs-12 col-sm-12">
                   <div class="p-10"></div>
                   <div class="block-title">
+                    <h2>What I&rsquo;d Do Next</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-road"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>The next steps are mostly about data and decoding. On data: the corpus is roughly 3.6 hours in total, which is small for ASR, and adding speakers, hours, and regional variety &mdash; including code-switched speech &mdash; while keeping validation speaker-disjoint would likely matter more than any hyperparameter change. On decoding: the CTC model currently uses its built-in decoder; a beam-search decoder with an external n-gram or neural language model is the standard next lever for WER, especially on conversational speech.</p>
+                        <p>On methods: a controlled comparison against a Whisper model fine-tuned on the same corpus would show whether FastConformer is the right architecture for this accent, and a hyperparameter sweep over learning rate, warmup, and SpecAugment strength would firm up the recipe. Finally, publishing the manifest generation and split so others can reproduce the exact 1,245/315-clip partitions would make the benchmark reusable.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
                     <h2>Links</h2>
                   </div>
                 </div>

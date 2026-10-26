@@ -242,6 +242,30 @@
                 <div class="col-xs-12 col-sm-12">
                   <div class="p-10"></div>
                   <div class="block-title">
+                    <h2>What I&rsquo;d Do Next</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-road"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Three changes would move this from a clean benchmark to a usable clinical component. First, scale and diversify the data: the corpus is small by ASR standards, and a random split cannot rule out the same speaker appearing on both sides, so a speaker-disjoint test set drawn from real clinical conversation &mdash; multiple accents, background noise, overlapping speech &mdash; is the single highest-value improvement.</p>
+                        <p>Second, measure what matters clinically. The reported scores use normalized text (lowercase, punctuation stripped), which is the right way to compare models but hides exactly the errors that break downstream use: drug names, dosages, and anatomy terms. Reporting a domain-term error rate, and restoring casing and punctuation, would show whether the model is safe for anything beyond transcription demos.</p>
+                        <p>Third, explore the modelling headroom: a larger Whisper checkpoint (medium or large-v3), domain-adapted decoding with contextual biasing or a medical language model, and a robustness sweep with added noise and reverberation. Publishing the evaluation script and split alongside the checkpoint would make all of this directly comparable.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
                     <h2>Links</h2>
                   </div>
                 </div>
