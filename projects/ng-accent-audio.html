@@ -71,8 +71,8 @@
                         <i class="fas fa-language"></i>
                       </div>
                       <div class="ci-text">
-                        <p>Nigerian English is one of the most widely spoken English varieties in Africa, yet it is underrepresented in ASR training data. This project pairs a curated, transcribed Nigerian-English speech corpus with an end-to-end fine-tuning pipeline for NVIDIA&rsquo;s FastConformer CTC acoustic model, built with NeMo on Google Colab.</p>
-                        <p>The workflow covers the full training lifecycle: dataset conversion and manifests, a corpus-specific tokenizer, a from-scratch baseline that was diagnosed when it failed, fine-tuning of a pretrained model, experiment tracking, and publishing the resulting checkpoint to the Hugging Face Hub.</p>
+                        <p>Nigerian English is one of the most widely spoken English varieties in Africa, yet it is almost absent from the data that modern speech recognisers learn from. Most public ASR corpora are dominated by North American and British speakers, so recognition quality drops as soon as a speaker&rsquo;s accent, rhythm, or vocabulary departs from those norms. This project addresses that gap directly: a curated, transcribed corpus of Nigerian-English conversational speech, paired with a complete fine-tuning pipeline for NVIDIA&rsquo;s FastConformer CTC acoustic model, built with NeMo on Google Colab.</p>
+                        <p>The work covers the entire lifecycle rather than a single training script &mdash; dataset conversion and manifest generation, a corpus-specific tokenizer, a from-scratch baseline that was diagnosed when it failed, fine-tuning of a pretrained model, experiment tracking with Weights &amp; Biases, and publication of the resulting checkpoint to the Hugging Face Hub. The sections below walk through each stage, including the failure, because the failure is part of the engineering story.</p>
                       </div>
                     </div>
                   </div>
@@ -82,7 +82,7 @@
                 <div class="col-xs-12 col-sm-12">
                   <div class="p-10"></div>
                   <div class="block-title">
-                    <h2>Dataset &amp; Split</h2>
+                    <h2>The Dataset</h2>
                   </div>
                 </div>
               </div>
@@ -94,8 +94,8 @@
                         <i class="fas fa-database"></i>
                       </div>
                       <div class="ci-text">
-                        <p>The corpus is <code>Alpha-Proxima/combined-audio</code>, a privately hosted Hugging Face dataset of <strong>1,608 transcribed Nigerian-English utterances</strong> with text and duration metadata. It is split 80/20 into training and validation sets with a fixed seed (42). A custom converter turns each Hugging Face sample into a WAV file and a NeMo JSONL manifest entry (<code>audio_filepath</code>, <code>duration</code>, <code>text</code>); NeMo&rsquo;s duration filtering then removes clips outside the configured bounds. The final training run loaded <strong>1,245 files (2.90 hours)</strong> of training audio and <strong>315 files (0.74 hours)</strong> for validation.</p>
-                        <p>A SentencePiece BPE tokenizer with a <strong>512-token vocabulary</strong> is trained on the transcript corpus using NeMo&rsquo;s <code>process_asr_text_tokenizer.py</code>, so the model&rsquo;s output units match the vocabulary of Nigerian-English speech rather than a generic English tokenizer.</p>
+                        <p>The corpus is <code>Alpha-Proxima/combined-audio</code>, a privately hosted Hugging Face dataset of <strong>1,608 transcribed Nigerian-English utterances</strong>, each with text and duration metadata. It is split 80/20 into training and validation sets with a fixed seed (42), so every experiment sees the same held-out speakers. A custom converter turns each Hugging Face sample into a WAV file plus a NeMo JSONL manifest entry (<code>audio_filepath</code>, <code>duration</code>, <code>text</code>). NeMo&rsquo;s duration filtering then removes clips outside the configured bounds, leaving <strong>1,245 files (2.90 hours)</strong> of training audio and <strong>315 files (0.74 hours)</strong> for validation.</p>
+                        <p>A SentencePiece BPE tokenizer with a <strong>512-token vocabulary</strong> is built from the transcript corpus using NeMo&rsquo;s <code>process_asr_text_tokenizer.py</code>. Learning the subword units from the data itself means Nigerian-English surface forms and conversational patterns are represented directly, instead of being forced through a vocabulary shaped by North American or British text.</p>
                       </div>
                     </div>
                   </div>
@@ -105,7 +105,30 @@
                 <div class="col-xs-12 col-sm-12">
                   <div class="p-10"></div>
                   <div class="block-title">
-                    <h2>Training</h2>
+                    <h2>The Baseline That Failed</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-bug"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>The first attempt trained a from-scratch <code>EncDecCTCModelBPE</code> in the FastConformer-CTC-BPE configuration &mdash; 115 M trainable parameters &mdash; using the custom tokenizer. It never converged. Validation WER stayed pinned at 100%, and the model emitted empty predictions for every validation utterance: a failure that is easy to mistake for a metrics bug but is really a training-signal problem.</p>
+                        <p>The notebook documents the diagnosis rather than hiding it. The main suspects were a 128-token vocabulary from an earlier tokenizer build that was too small for the corpus&rsquo;s linguistic diversity, an undertrained model, learning-rate and optimisation settings, and data-quality checks on the audio and transcriptions. Each came with a concrete remedy: a larger vocabulary (the final tokenizer uses 512 tokens), a pretrained initialisation, and a longer, better-scheduled run.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>The Fine-Tuning Recipe</h2>
                   </div>
                 </div>
               </div>
@@ -117,8 +140,7 @@
                         <i class="fas fa-microchip"></i>
                       </div>
                       <div class="ci-text">
-                        <p>Two training runs document the path to a working model. The first was a from-scratch <code>EncDecCTCModelBPE</code> (FastConformer-CTC-BPE configuration, 115 M trainable parameters) with the custom tokenizer. It did not converge: validation WER stayed pinned at 100% and the model emitted empty predictions throughout training. That failure was analysed rather than hidden, and the diagnostics are summarised below.</p>
-                        <p>The working model instead fine-tunes the NGC pretrained <code>stt_en_fastconformer_ctc_large</code> checkpoint on the accent data with PyTorch Lightning and NeMo&rsquo;s experiment manager: batch size 4, AdamW (learning rate 5e-4, weight decay 0.001), cosine annealing with 2,000 warmup steps, SpecAugment, and 16-bit mixed precision on a single Colab GPU. Checkpoints are selected by minimum validation WER with early stopping (patience 3), and runs are logged to Weights &amp; Biases (project <code>naija_en_asr</code>).</p>
+                        <p>The working model starts from the NGC pretrained <code>stt_en_fastconformer_ctc_large</code> checkpoint instead of random weights. Fine-tuning runs through PyTorch Lightning and NeMo&rsquo;s experiment manager: batch size 4, AdamW with a learning rate of 5e-4 and weight decay of 0.001, cosine annealing with 2,000 warmup steps, SpecAugment, and 16-bit mixed precision on a single Colab GPU. Checkpoints are selected by minimum validation WER, training stops early after three epochs without improvement, and every run is logged to Weights &amp; Biases (project <code>naija_en_asr</code>) so the curves and metrics are reproducible.</p>
                       </div>
                     </div>
                   </div>
@@ -140,7 +162,20 @@
                         <i class="fas fa-chart-line"></i>
                       </div>
                       <div class="ci-text">
-                        <p>Validation WER fell from <strong>55.1% at epoch 0 to 28.1% at epoch 12</strong>, improving at every saved checkpoint (0.551 &rarr; 0.430 &rarr; 0.377 &rarr; 0.360 &rarr; 0.348 &rarr; 0.334 &rarr; 0.304 &rarr; 0.288 &rarr; 0.281); training stopped after 15 epochs. The best checkpoint &mdash; a 463 MB NeMo archive &mdash; was pushed to the Hugging Face Hub as <code>oegbo/fastconformer_enng</code> and reloaded from the Hub for a further two epochs of continued fine-tuning.</p>
+                        <p>Validation WER fell from <strong>55.1% at epoch 0 to 28.1% at epoch 12</strong>, improving at every saved checkpoint (0.551 &rarr; 0.430 &rarr; 0.377 &rarr; 0.360 &rarr; 0.348 &rarr; 0.334 &rarr; 0.304 &rarr; 0.288 &rarr; 0.281); training stopped after 15 epochs. The learning curves tell the same story: training loss falls steadily, validation loss follows without diverging, and validation WER drops in steps as the model locks onto the accent.</p>
+                        <figure style="margin: 22px auto; max-width: 80%; text-align: center;">
+                          <img src="../img/project/ng-accent/train-loss.png" alt="Training loss during FastConformer fine-tuning" style="width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto;">
+                          <figcaption style="font-size: 0.85em; color: #555; margin-top: 8px;">Training loss across the fine-tuning run.</figcaption>
+                        </figure>
+                        <figure style="margin: 22px auto; max-width: 80%; text-align: center;">
+                          <img src="../img/project/ng-accent/val-loss.png" alt="Validation loss during FastConformer fine-tuning" style="width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto;">
+                          <figcaption style="font-size: 0.85em; color: #555; margin-top: 8px;">Validation loss at each evaluation step.</figcaption>
+                        </figure>
+                        <figure style="margin: 22px auto; max-width: 80%; text-align: center;">
+                          <img src="../img/project/ng-accent/val-wer.png" alt="Validation word error rate during fine-tuning" style="width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto;">
+                          <figcaption style="font-size: 0.85em; color: #555; margin-top: 8px;">Validation WER per evaluation step &mdash; the headline curve.</figcaption>
+                        </figure>
+                        <p>The numbers need context. A 28% word error rate on spontaneous, conversational speech is a substantial improvement over 55% and a workable starting point for a low-resource accent, but it is not production-grade. The corpus is small for ASR (about 3.6 hours in total), the validation set is smaller still, and 15 epochs leaves room for more training with a larger corpus.</p>
                       </div>
                     </div>
                     <div class="info-block-w-icon" style="margin-bottom: 18px;">
@@ -163,7 +198,7 @@
                 <div class="col-xs-12 col-sm-12">
                   <div class="p-10"></div>
                   <div class="block-title">
-                    <h2>Diagnosing the Failed Baseline</h2>
+                    <h2>From Notebook to Shared Model</h2>
                   </div>
                 </div>
               </div>
@@ -172,10 +207,10 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-icon">
-                        <i class="fas fa-bug"></i>
+                        <i class="fas fa-share-alt"></i>
                       </div>
                       <div class="ci-text">
-                        <p>The notebook documents the analysis behind the empty predictions: a 128-token vocabulary from an earlier tokenizer build that was too small for the corpus&rsquo;s linguistic diversity, an undertrained model, learning-rate and optimisation settings, and data-quality checks on the audio and transcriptions. Each is paired with a concrete next step &mdash; a larger vocabulary (the final tokenizer uses 512 tokens), longer training, and a reviewed learning-rate schedule.</p>
+                        <p>The best checkpoint &mdash; a 463 MB NeMo archive &mdash; was pushed to the Hugging Face Hub as <code>oegbo/fastconformer_enng</code>, then reloaded from the Hub and fine-tuned for two more epochs to verify that the published artifact works end to end. The Colab notebook is kept alongside it as the reproducible record of the full pipeline, from manifest generation to training curves.</p>
                       </div>
                     </div>
                   </div>
