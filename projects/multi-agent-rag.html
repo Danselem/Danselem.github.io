@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Daniel Egbo — Multi-agent RAG Applications</title>
+  <title>Daniel Egbo — SAAO arXiv RAG: Hybrid-Search Literature Assistant</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Multi-agent retrieval-augmented generation for complex QA" />
+  <meta name="description" content="SAAO arXiv RAG: Airflow-ingested arXiv papers, Docling PDF parsing, BM25+vector hybrid search in OpenSearch, and citation-based answers from a local Ollama LLM" />
   <meta name="keywords" content="vcard, resposnive, retina, resume, jquery, css3, bootstrap, portfolio" />
   <meta name="author" content="lmpixels" />
   <link rel="shortcut icon" href="../favicon.ico">
@@ -38,6 +38,8 @@
           <div class="site-nav mobile-menu-hide">
             <ul class="leven-classic-menu site-main-menu">
               <li class="menu-item"><a href="../index.html">About Me</a></li>
+              <li class="menu-item"><a href="../research.html">Research</a></li>
+              <li class="menu-item"><a href="../engineering.html">AI Engineer</a></li>
               <li class="menu-item"><a href="../publications.html">Publications</a></li>
               <li class="menu-item current-menu-item"><a href="../projects.html">Projects</a></li>
               <li class="menu-item"><a href="../awards.html">Awards</a></li>
@@ -52,7 +54,7 @@
         <div id="main-content" class="single-page-content">
           <div id="primary" class="content-area">
             <div class="page-title" style="text-align: center; padding: 40px 70px;">
-              <h1>Multi-agent RAG Applications</h1>
+              <h1>SAAO arXiv RAG: Hybrid-Search Literature Assistant</h1>
             </div>
             <div id="content" class="page-content site-content single-post" role="main">
               <div class="row">
@@ -68,11 +70,125 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-icon">
-                        <i class="fas fa-robot"></i>
+                        <i class="fas fa-book-open"></i>
                       </div>
                       <div class="ci-text">
-                        <p>Multi-agent retrieval-augmented generation system coordinating specialized agents for complex document-based question answering.</p>
-                        <p>This system uses multiple specialized LLM agents that collaborate to answer complex questions across large document collections. Each agent handles a specific role: document retrieval, information extraction, reasoning, and response synthesis. Agents communicate via a shared message bus, enabling parallel processing and conflict resolution. Built on LangChain with support for multiple vector stores and LLM backends.</p>
+                        <p>Astrophysics literature grows faster than any researcher can read it, and keyword search over abstracts only gets you so far. This project is a retrieval-augmented generation system built for the South African Astronomical Observatory community: it ingests arXiv papers, parses the full PDFs, indexes them for both keyword and semantic search, and answers natural-language questions with citations back to the source papers.</p>
+                        <p>It is a complete service rather than a notebook demo &mdash; a monthly ingestion pipeline orchestrated with Airflow, a FastAPI backend, a Gradio interface, and a local model stack (Ollama, OpenSearch, PostgreSQL, Redis, MinIO, Langfuse) running through Docker Compose. The design goal throughout was citation-grounded answers: the model is instructed to answer only from retrieved excerpts and to say when the excerpts are insufficient.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>The Ingestion Pipeline</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-stream"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>The <code>saao_monthly_ingestion</code> DAG runs on a monthly schedule and chains six tasks: environment setup, fetching the papers listed in <code>airflow/papers.txt</code> through the arXiv API, parsing each PDF with Docling for structured full text, chunking (default 600 words with 100-word overlap), embedding, and indexing into OpenSearch. Verification and a monthly summary report follow, then a cleanup task prunes temporary PDFs. PDFs themselves are stored in MinIO and paper metadata lives in PostgreSQL, so the search index can always be rebuilt from first principles.</p>
+                        <p>Chunks are indexed with deterministic document IDs (<code>arxiv_id + chunk index</code>) and upserted, which makes re-ingestion idempotent: re-running the pipeline updates existing chunks instead of duplicating them. Embeddings come from a local Ollama embedding model (768-dimensional vectors, <code>nomic-embed-text</code> by default).</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Hybrid Retrieval</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-search"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Keyword search alone misses paraphrases; vector search alone misses exact terminology and identifiers, which matter a lot in scientific text. The index therefore supports both in a single OpenSearch index: BM25 over analysed text and approximate nearest-neighbour search over the embeddings using HNSW (cosine similarity, <code>m=16</code>, <code>ef_construction=512</code>). Results are fused with Reciprocal Rank Fusion (<code>k=60</code>), which combines the two rankings without hand-tuned weights.</p>
+                        <p>The API exposes hybrid search as a toggle. If embedding generation fails at query time, the request degrades gracefully to pure BM25 instead of erroring &mdash; a small piece of operational maturity that matters when the embedding service is a local container. Category filters (e.g. <code>astro-ph.GA</code>, <code>astro-ph.SR</code>) and a configurable <code>top_k</code> are supported on both the API and the UI.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Answer Generation</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-comment-dots"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Retrieved chunks are assembled into a prompt for a local model served by Ollama (<code>llama3.2:1b</code> by default). The system prompt constrains the model to the supplied excerpts, requires citations by paper title or arXiv ID, and tells it to acknowledge uncertainty when the excerpts are incomplete &mdash; the classic failure mode of RAG systems is a model that answers confidently from its own priors.</p>
+                        <p>Responses return the answer together with the source papers (direct PDF links), the number of chunks used, and the search mode, so users can check the evidence themselves. The endpoint streams tokens for long answers, and exact-match query results are cached in Redis. Every request is traced end to end in Langfuse &mdash; separate spans cover embedding, retrieval, prompt construction, and generation &mdash; which makes it possible to see whether a bad answer came from retrieval or from the model.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Engineering</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-cogs"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>The whole stack runs locally with Docker Compose: FastAPI, the Gradio UI, Airflow, OpenSearch and Dashboards, PostgreSQL, Redis, MinIO, Ollama, and the Langfuse/ClickHouse observability pair. Makefile profiles (<code>up-core</code>, <code>up-api</code>, <code>up-pipeline</code>, <code>ingest</code>, <code>rag-app</code>) let you bring up only the services a task needs instead of the full eleven-container system. The project uses Python 3.12 with uv, ruff for formatting and linting, mypy for type checking, and a pytest suite covering the API routers (ask, hybrid search, health), the arXiv client, metadata fetcher, OpenSearch query builder, PDF parser, and response schemas.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>What I&rsquo;d Do Next</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-road"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>The biggest gap is evaluation. The system has tests for its components, but no retrieval-quality benchmark: there is no curated question set with gold passages, so recall@k, citation precision, and answer faithfulness are not measured. Building that harness is the first priority &mdash; it converts every later change (reranking, chunking, model choice) from a guess into a measurement.</p>
+                        <p>After that, the obvious levers are a cross-encoder reranker on top of the fused results, query rewriting for vague or multi-part questions, chunking experiments (section-aware rather than fixed-size), and a larger local model than the 1B parameter default for answer synthesis. Wiring linting, type checks, and tests into CI, and publishing the benchmark alongside the repo, would make the project easy for others to reproduce and extend.</p>
                       </div>
                     </div>
                   </div>
@@ -91,7 +207,7 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
-                        <p><a href="https://github.com/Danselem/aisafety-chat" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a></p>
+                        <p><a href="https://github.com/Danselem/saao-arxiv-paper" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a> <a href="https://github.com/Danselem/saao-arxiv-paper#-quick-start" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">Quick Start</a></p>
                       </div>
                     </div>
                   </div>
