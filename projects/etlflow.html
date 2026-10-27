@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Daniel Egbo — ETLFlow ETL - Data pipeline with Airflow and Spark</title>
+  <title>Daniel Egbo — ETLFlow: Airflow 3.0 + Spark ETL Stack</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="End-to-end ETL pipeline with Apache Airflow and Spark" />
+  <meta name="description" content="ETLFlow: a full ETL stack that runs on your laptop with Docker Compose — Airflow 3.0 orchestrates Spark over MySQL, Postgres, Kafka and MinIO." />
   <meta name="keywords" content="vcard, resposnive, retina, resume, jquery, css3, bootstrap, portfolio" />
   <meta name="author" content="lmpixels" />
   <link rel="shortcut icon" href="../favicon.ico">
@@ -52,7 +52,7 @@
         <div id="main-content" class="single-page-content">
           <div id="primary" class="content-area">
             <div class="page-title" style="text-align: center; padding: 40px 70px;">
-              <h1>ETLFlow ETL - Data pipeline with Airflow and Spark</h1>
+              <h1>ETLFlow — ETL pipelines with Airflow 3.0 and Spark</h1>
             </div>
             <div class="cosmic-banner"></div>
             <div id="content" class="page-content site-content single-post" role="main">
@@ -72,8 +72,117 @@
                         <i class="fas fa-code-branch"></i>
                       </div>
                       <div class="ci-text">
-                        <p>End-to-end ETL pipeline orchestrated with Apache Airflow and processed with Apache Spark for scalable data transformation and analytics.</p>
-                        <p>ETLFlow is a production-grade data pipeline that ingests data from multiple sources, performs transformations using Apache Spark, and loads results into analytics databases. Airflow DAGs manage scheduling, monitoring, and error handling. The pipeline supports incremental loads, data quality checks, and is containerized with Docker for easy deployment.</p>
+                        <p>ETLFlow is a complete ETL stack you can run on your laptop with Docker Compose. It puts Apache Airflow 3.0, Spark, Kafka, MySQL, Postgres and MinIO in one project, and the pipeline does the full job: pull rows out of MySQL, validate them, transform them with Spark, and load the result into Postgres.</p>
+                        <p>It is built to show how these tools fit together in practice — service dependencies, environment configuration, health checks — without needing a cloud account or a cluster.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>How It Runs</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-cubes"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Three Make commands start everything: <code>make env</code> creates your <code>.env</code> file, <code>make build</code> builds the Airflow image, <code>make up</code> starts the stack. The custom image is Airflow 3.0.6 with Java and PySpark installed, so Airflow can submit Spark jobs itself.</p>
+                        <p>Airflow runs as five containers (API server, scheduler, DAG processor, Celery worker, triggerer), with Redis as the broker and Postgres for metadata. Every service has a health check, so the stack comes up in the right order. MySQL starts with a sample <code>orders</code> table; Postgres has a <code>jobs</code> database where results land.</p>
+                        <p>When it is up: Airflow at <code>localhost:8080</code>, Spark UI at <code>:9090</code>, MinIO at <code>:9001</code>, PGAdmin at <code>:8050</code>, Postgres at <code>:5432</code>.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Architecture</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-text">
+                        <p><img src="../img/project/etlflow/architecture.png" alt="ETLFlow architecture: Airflow orchestrating Spark inside Docker Compose, with MinIO for storage and MySQL and Postgres as source and destination" style="width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto;"></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>The batch_ingest DAG</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-random"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p><code>batch_ingest</code> runs the pipeline in five steps: read the <code>orders</code> table from MySQL, check it against a Pandera schema, write the CSV to the MinIO <code>raw-data</code> bucket, run <code>spark_batch_job.py</code> to deduplicate and aggregate, then save Parquet and load it into the Postgres <code>orders_transformed</code> table.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>The sparking_flow DAG</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-bolt"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p><code>sparking_flow</code> submits Spark jobs from Airflow with <code>SparkSubmitOperator</code> — a Python job and a Java job built with Maven, plus an optional Scala example. This is the part that proves Airflow can drive Spark, not just Python tasks.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Stack</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-icon">
+                        <i class="fas fa-layer-group"></i>
+                      </div>
+                      <div class="ci-text">
+                        <p>Airflow 3.0 (CeleryExecutor) · Spark (Bitnami) · Kafka + Zookeeper · MySQL 8.0 · Postgres 16 · MinIO · Redis · Pandera · Docker Compose · Make. MIT licensed. Setup is written up in a Medium post; the repo README covers the DAGs and data flow.</p>
                       </div>
                     </div>
                   </div>
@@ -92,7 +201,7 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
-                        <p><a href="https://github.com/Danselem/etlflow" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a></p>
+                        <p><a href="https://github.com/Danselem/etlflow" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a> <a href="https://medium.com/@danielegbo/building-a-production-ready-etl-pipeline-with-docker-compose-airflow-spark-and-microservices-c2f12cb6d85c" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">Read the write-up</a></p>
                       </div>
                     </div>
                   </div>
