@@ -1,0 +1,258 @@
+/* ==========================================================================
+   Cosmic accent layer — loaded after main.css
+   Light, full-width layout with colourful nebula banners between sections.
+   Imagery: NASA/ESA/CSA James Webb "Cosmic Cliffs" (CC BY 4.0, NASA/STScI).
+   ========================================================================== */
+
+:root {
+  --corona-600: #D93E12;
+  --corona-500: #F75023;
+  --corona-400: #FF8A3D;
+  --corona-300: #FFB347;
+  --nebula-400: #5B3A8C;
+  --ion-400: #4CC9F0;
+  --paper: #FBFAF7;
+  --ink: #191A2C;
+}
+
+/* ---------------------------------------------------------------- canvas -- */
+
+body {
+  background-color: #F4F1EA;
+}
+
+.page-container {
+  background-color: var(--paper);
+}
+
+@media print {
+  body {
+    background: #fff !important;
+  }
+  .cosmic-banner {
+    display: none !important;
+  }
+}
+
+/* ------------------------------------------------------------ typography -- */
+
+a {
+  color: #B93A0F;
+}
+
+a:hover,
+a:focus {
+  color: #8F2A08;
+}
+
+::selection {
+  background: rgba(247, 80, 35, 0.22);
+  color: var(--ink);
+}
+
+.block-title h2:before {
+  background-color: #EFE7DC;
+}
+
+.block-title h2:after {
+  background: linear-gradient(90deg, var(--corona-500), var(--corona-300));
+}
+
+.info-block-w-icon i {
+  color: var(--corona-500);
+}
+
+/* ------------------------------------------------------- header and nav -- */
+
+.logo-symbol {
+  background: linear-gradient(135deg, var(--corona-500) 0%, var(--corona-400) 45%, var(--corona-300) 100%);
+  color: #1A0F06;
+  box-shadow: 0 8px 20px -8px rgba(247, 80, 35, 0.7);
+}
+
+.logo-text {
+  color: var(--ink);
+}
+
+.site-main-menu li a {
+  color: #3A3550;
+}
+
+.site-main-menu li.current-menu-item > a,
+.site-main-menu li.current-menu-parent > a,
+.site-main-menu li:hover > a {
+  color: var(--corona-600);
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------- buttons -- */
+
+.btn-primary,
+.btn-secondary {
+  border-radius: 999px;
+  box-shadow: 0 10px 24px -14px rgba(247, 80, 35, 0.6);
+}
+
+.btn-primary {
+  background-color: var(--corona-500);
+  background-image: linear-gradient(135deg, var(--corona-500) 0%, var(--corona-400) 100%);
+  border-color: transparent;
+  color: #fff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--corona-600);
+  background-image: linear-gradient(135deg, var(--corona-600) 0%, var(--corona-500) 100%);
+  border-color: transparent;
+  color: #fff;
+}
+
+.btn-secondary {
+  background-color: #fff;
+  border-color: #F3B79F;
+  color: #B93A0F;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: #FFF3EC;
+  border-color: var(--corona-500);
+  color: #8F2A08;
+}
+
+.btn-outline-primary {
+  background: transparent;
+  border: 2px solid var(--corona-500);
+  border-radius: 999px;
+  color: #B93A0F;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background: var(--corona-500);
+  border-color: var(--corona-500);
+  color: #fff;
+}
+
+/* --------------------------------------------------------------- banners -- */
+
+.cosmic-banner {
+  position: relative;
+  height: 210px;
+  margin: 0 -70px 55px;
+  background-color: #150F30;
+  background-image:
+    linear-gradient(90deg, var(--paper) 0%, rgba(251, 250, 247, 0) 10%, rgba(251, 250, 247, 0) 90%, var(--paper) 100%),
+    linear-gradient(180deg, rgba(251, 250, 247, 0) 62%, rgba(251, 250, 247, 0.28) 88%, var(--paper) 100%),
+    url("../img/cosmic/carina.jpg");
+  background-size: 100% 100%, 100% 100%, cover;
+  background-position: center, center, center 38%;
+  background-repeat: no-repeat;
+}
+
+.cosmic-banner--alt {
+  background-position: center, center, 72% 62%;
+}
+
+.cosmic-banner--short {
+  height: 150px;
+}
+
+@media (max-width: 991px) {
+  .cosmic-banner {
+    margin: 0 -40px 40px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cosmic-banner {
+    height: 120px;
+    margin: 0 -40px 32px;
+  }
+}
+
+/* ------------------------------------------------------------ page title -- */
+
+.page-title {
+  background-color: transparent;
+  background-image: linear-gradient(180deg, rgba(247, 80, 35, 0.06), rgba(76, 201, 240, 0.05));
+  border-top: none;
+  border-bottom: 1px solid #EFE7DC;
+}
+
+/* ------------------------------------------------------------ homepage -- */
+
+.cosmic-hero {
+  background-image:
+    radial-gradient(560px 300px at 8% 0%, rgba(247, 80, 35, 0.10), transparent 62%),
+    radial-gradient(620px 340px at 96% 8%, rgba(76, 201, 240, 0.10), transparent 60%),
+    linear-gradient(135deg, #FFF8F2 0%, #FAF3FF 55%, #F0FAFF 100%);
+  border-radius: 30px;
+  padding: 30px 24px 10px;
+  margin-top: 6px;
+}
+
+.home-buttons .btn {
+  min-width: 170px;
+  text-align: center;
+}
+
+.home-photo {
+  border-color: #FFFDF9;
+  box-shadow:
+    0 24px 60px -20px rgba(91, 58, 140, 0.45),
+    0 0 0 6px rgba(247, 80, 35, 0.10);
+}
+
+.card {
+  background-image: linear-gradient(160deg, #FFF8F2 0%, #FDF7FF 55%, #F3FAFF 100%);
+}
+
+.cosmic-cta {
+  border: 1px solid #F3D9C8;
+  border-radius: 18px;
+  background-color: #FFF9F3;
+  background-image:
+    radial-gradient(500px 260px at 92% -10%, rgba(247, 80, 35, 0.14), transparent 62%),
+    linear-gradient(135deg, #FFF8F2 0%, #FBF4FF 60%, #F1FAFF 100%);
+  box-shadow: 0 24px 60px -40px rgba(91, 58, 140, 0.35);
+}
+
+/* --------------------------------------------------------------- footer -- */
+
+.site-footer {
+  background-color: #F7F4EE;
+  border-top: 2px solid #EFE7DC;
+}
+
+.site-footer,
+.site-footer p,
+.site-footer a,
+.site-footer .footer-social-links li a {
+  color: #4A4458;
+}
+
+.site-footer a:hover,
+.site-footer .footer-social-links li a:hover {
+  color: var(--corona-600);
+  opacity: 1;
+}
+
+.footer-credit {
+  font-size: 11px;
+  line-height: 1.5;
+  opacity: 0.7;
+  margin-top: 6px;
+}
+
+/* ------------------------------------------------------------ utilities -- */
+
+.preloader-spinner {
+  background-color: var(--corona-500);
+}
+
+.lmpixels-scroll-to-top {
+  color: var(--corona-500);
+}
