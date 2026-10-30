@@ -92,6 +92,7 @@
                       </div>
                       <div class="ci-text">
                         <p><strong>Published in <em>Monthly Notices of the Royal Astronomical Society</em>, Vol. 540, Issue 3 (July 2025), pp. 2685&ndash;2702</strong> &middot; <a href="https://academic.oup.com/mnras/article/540/3/2685/8151497" target="_blank" rel="noopener noreferrer">Read the paper (open access)</a> &middot; <a href="https://arxiv.org/abs/2505.22139" target="_blank" rel="noopener noreferrer">arXiv</a></p>
+                        <p><em>Co-authored with D. A. H. Buckley, P. J. Groot, F. Cavallaro, P. A. Woudt, M. A. Thompson, M. Mutale, and M. Bietenholz.</em></p>
                         <p>How do you find the stars hiding among half a million radio sources? That was the problem this paper set out to solve. The SARAO MeerKAT Galactic Plane Survey (SMGPS) is a 1.3 GHz radio continuum survey covering nearly half the Galactic plane &mdash; 443,455 radio sources in total &mdash; and Gaia DR3 provides optical positions for 1.81 billion objects. Matching the two sounds like a nearest-neighbour problem. In the crowded Galactic plane it is not.</p>
                       </div>
                     </div>
@@ -238,36 +239,7 @@
                       </div>
                       <div class="ci-text">
                         <p>A sample of real counterparts should show real physics. Radio luminosity correlates with absolute magnitude across the 629 stars (Kendall&rsquo;s &tau; = 0.46) &mdash; the kind of relationship expected if these are genuine stellar associations rather than random alignments.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                  <div class="p-10"></div>
-                  <div class="block-title">
-                    <h2>Why This Matters Beyond Astronomy</h2>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                  <div class="info-list-w-icon">
-                    <div class="info-block-w-icon">
-                      <div class="ci-icon">
-                        <i class="fas fa-cogs"></i>
-                      </div>
-                      <div class="ci-text">
-                        <p>This is a statistical cross-matching and catalog-fusion project, not a machine-learning classifier &mdash; but the underlying skills transfer directly to industry data problems:</p>
-                        <ul>
-                            <li><strong>Record linkage / entity resolution at scale</strong> &mdash; matching a ~440K-record dataset against a ~1.8B-record reference catalog using engineered features (position, distance, colour) and statistical thresholds rather than exact keys</li>
-                            <li><strong>False-positive rate quantification via simulation</strong> &mdash; building a Monte Carlo null model to measure match confidence, the same logic used in fraud detection, deduplication, and anomaly detection pipelines</li>
-                            <li><strong>Iterative pipeline design under a hard constraint</strong> &mdash; abandoning the full-sample and distance-limited approaches once validation showed they didn&rsquo;t scale, then re-engineering the candidate pool to actually solve the problem</li>
-                            <li><strong>Multi-source data fusion</strong> &mdash; combining radio, optical (Gaia), and infrared (AllWISE) survey data with different formats, coordinate epochs, and reliability characteristics into one validated pipeline</li>
-                            <li><strong>Result validation against an independent signal</strong> &mdash; checking the final sample&rsquo;s physical plausibility rather than stopping at &ldquo;we found matches&rdquo;</li>
-                        </ul>
-                        <p><em>Co-authored with D. A. H. Buckley, P. J. Groot, F. Cavallaro, P. A. Woudt, M. A. Thompson, M. Mutale, and M. Bietenholz.</em></p>
+                        <p>Nothing in this pipeline is astronomy-specific &mdash; matching 440,000 records against 1.8 billion, and proving the matches are real before trusting them, is the same problem any large catalogue has.</p>
                       </div>
                     </div>
                   </div>

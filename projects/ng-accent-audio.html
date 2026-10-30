@@ -119,7 +119,7 @@
                       </div>
                       <div class="ci-text">
                         <p>The first attempt trained a from-scratch <code>EncDecCTCModelBPE</code> in the FastConformer-CTC-BPE configuration &mdash; 115 M trainable parameters &mdash; using the custom tokenizer. It never converged. Validation WER stayed pinned at 100%, and the model emitted empty predictions for every validation utterance: a failure that is easy to mistake for a metrics bug but is really a training-signal problem.</p>
-                        <p>The notebook documents the diagnosis rather than hiding it. The main suspects were a 128-token vocabulary from an earlier tokenizer build that was too small for the corpus&rsquo;s linguistic diversity, an undertrained model, learning-rate and optimisation settings, and data-quality checks on the audio and transcriptions. Each came with a concrete remedy: a larger vocabulary (the final tokenizer uses 512 tokens), a pretrained initialisation, and a longer, better-scheduled run.</p>
+                        <p>The diagnosis is in the notebook rather than hidden. The killer was the vocabulary: the tokenizer had been built with 128 tokens, far too few for the linguistic diversity of Nigerian English, so the model was being asked to spell a language it didn&rsquo;t have the letters for. Rebuilding the tokenizer at 512 tokens, starting from the pretrained NGC checkpoint instead of random weights, and scheduling a longer run ended the dead runs.</p>
                       </div>
                     </div>
                   </div>
