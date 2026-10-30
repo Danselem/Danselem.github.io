@@ -6,13 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Daniel Egbo — AI Engineer (LLM/RAG/MLOps)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AI Engineer Daniel Egbo: production RAG and agentic systems, LLM fine-tuning (LoRA/PEFT), speech AI, and MLOps with Docker, Kubernetes, AWS, and GCP. Astronomy PhD, UCT (thesis submitted Jul 2026)." />
+  <meta name="description" content="AI Engineer Daniel Egbo: RAG over scientific literature, speech model fine-tuning, and data pipelines. Astronomy PhD, UCT (thesis submitted July 2026)." />
   <meta name="keywords" content="Daniel Egbo AI Engineer, LLM Fine-tuning, RAG Systems, Agentic AI, LoRA PEFT, Vector Databases, Speech AI, MLOps, Docker, Kubernetes, AWS, GCP, LangGraph" />
   <meta name="author" content="Daniel Egbo" />
 
   <!-- Open Graph / Social Media -->
   <meta property="og:title" content="Daniel Egbo — AI Engineer" />
-  <meta property="og:description" content="Production RAG and agentic AI, LLM fine-tuning, speech AI, and MLOps. Docker/Kubernetes/CI-CD across AWS and GCP." />
+  <meta property="og:description" content="RAG over scientific literature, speech fine-tuning, and data pipelines, with an astronomy PhD from UCT." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://danselem.github.io/engineering.html" />
   <meta property="og:image" content="https://danselem.github.io/img/Daniel_photo.jpeg" />
@@ -22,7 +22,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Daniel Egbo — AI Engineer" />
-  <meta name="twitter:description" content="RAG/agents, LLM fine-tuning, speech AI, MLOps. Docker/K8s/CI-CD on AWS and GCP." />
+  <meta name="twitter:description" content="RAG over scientific literature, speech fine-tuning, and data pipelines." />
   <meta name="twitter:image" content="https://danselem.github.io/img/Daniel_photo.jpeg" />
 
   <!-- Structured Data (JSON-LD) -->
@@ -154,25 +154,8 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
-                        <p>
-                          AI Engineer designing, building, and deploying production AI systems across
-                          cloud and on-premise environments — from data engineering and model development
-                          to workflow orchestration and monitored deployment. Hands-on in LLM fine-tuning
-                          (LoRA/PEFT), retrieval-augmented generation with hybrid search,
-                          conversational and speech AI, and MLOps with Python, PyTorch, Docker,
-                          Kubernetes, AWS, and GCP.
-                        </p>
-                        <p>
-                          Astronomy PhD, UCT (thesis submitted Jul 2026), bringing large-scale pipeline
-                          and statistical-evaluation rigor — 443K&times;1.8B-record cross-matching with
-                          Monte Carlo reliability modelling — to production LLM systems.
-                          <!-- TODO(CV): PhD work was statistical cross-matching, not LLMs — keep this bridge methodological, never topical. -->
-                        </p>
-                        <p>
-                          <a href="Daniel_Egbo_CV_AI.pdf" target="_blank" class="btn btn-primary">Download AI CV</a>
-                          <a href="https://github.com/Danselem" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub</a>
-                          <a href="https://www.linkedin.com/in/egbodaniel/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">LinkedIn</a>
-                        </p>
+                        <p>I build systems that find signal in messy data: search over scientific literature, speech models, cross-matching catalogues of hundreds of thousands of objects. The part I care about most is measurement &mdash; building the evaluation that tells you whether the system actually works, then fixing what it finds.</p>
+                        <p>Cape Town, South Africa. Open to AI engineering roles, remote or relocation.</p>
                       </div>
                     </div>
                   </div>
@@ -180,12 +163,81 @@
               </div>
               <!-- /Summary -->
 
-              <!-- Experience -->
+              <!-- Selected Work -->
               <div class="row">
                 <div class="col-xs-12 col-sm-12">
                   <div class="p-10"></div>
                   <div class="block-title">
-                    <h2>Experience</h2>
+                    <h2>Selected Work</h2>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="block-title">
+                    <h2>Which of 443,455 radio sources are stars?</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-text">
+                        <p>The MeerKAT Galactic Plane Survey catalogues 443,455 compact radio sources. Most are not stars at all &mdash; they are background galaxies, quasars and active galactic nuclei. I needed the stellar ones, matched against Gaia DR3 (1.81 billion optical sources) and X-ray catalogues.</p>
+                        <p>Nearest-neighbour matching inside a distance limit was the obvious first move. A Monte Carlo null model &mdash; randomising positions and re-matching &mdash; showed why it fails: reliability stayed under about 15% at every radius tested. Restricting candidates by Bayesian distance estimates fixed the purity (91% at 50 pc) but returned six stars. Accurate, and useless.</p>
+                        <p>What worked was changing the reference catalogue instead of the radius: assemble ~361,000 Gaia objects from populations already known to emit radio &mdash; flare stars, RS CVn and BY Dra binaries, young stellar objects, OB and Wolf&ndash;Rayet stars &mdash; then match against that and quantify it with the same null model. The result was 629 stellar counterparts at 94% reliability within 2 arcseconds, published in MNRAS.</p>
+                        <p><a href="projects/radio-star-discovery.html" class="btn btn-outline-primary btn-sm">Read the full analysis</a> <a href="https://arxiv.org/abs/2505.22139" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm">arXiv</a></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Medical speech on a free GPU</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-text">
+                        <p>I wanted to see how much of the medical-ASR gap a small model could close on a free Colab GPU. <code>whisper-medium</code> crashed before 500 steps, so I used <code>whisper-small</code>: 1,000 steps, batch 32 &mdash; and I was pleased that batch 32 fit at all.</p>
+                        <p>The data fought back first. The source dataset&rsquo;s split was odd &mdash; most of the audio sat in the &ldquo;test&rdquo; partition &mdash; so I resplit it, kept 500 clips untouched, capped clips at Whisper&rsquo;s 30-second window, and resampled everything to 16 kHz mono.</p>
+                        <p>The evaluation harness earned its keep on the first run: the stock baseline beat my fine-tuned model. Two bugs. Test audio was going in at its native 44.1 kHz to a pipeline that assumed 16 kHz, so the model was hearing mush; and unconstrained decoding produced repetition loops that dominated the word error rate. Resampling the test set and applying the same constrained decoding to both models fixed both.</p>
+                        <p>The honest number, 500 untouched clips: 11.0% &rarr; 5.4% normalized WER (20.6% &rarr; 12.7% raw). The checkpoint is on Hugging Face and the notebook is public. What I would do next is the harder part: a speaker-disjoint clinical test set, and error rates on drug names and dosages rather than only normalized text.</p>
+                        <p><a href="projects/whisper-medical.html" class="btn btn-outline-primary btn-sm">Read the full analysis</a> <a href="https://huggingface.co/oegbo/whisper-small-medical-v2" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm">Model</a></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>A search engine for the literature nobody reads in full</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-text">
+                        <p>Astrophysics publishes more than any researcher can read. This service ingests arXiv papers, parses the full PDFs with Docling, and answers questions with citations back to the source: Airflow for monthly ingestion, FastAPI and Gradio on top, and OpenSearch, Postgres, Redis, MinIO, Ollama and Langfuse running in Docker Compose.</p>
+                        <p>The one real design decision was hybrid retrieval. Keyword search misses paraphrases; vector search misses exact identifiers and terminology, which is most of scientific text. Both live in a single OpenSearch index &mdash; BM25 alongside HNSW over 768-dimension <code>nomic-embed-text</code> vectors &mdash; fused with reciprocal rank fusion. If the embedding service fails at query time, the API falls back to BM25 instead of erroring.</p>
+                        <p>Generation runs on a local 1B-parameter model constrained to the retrieved excerpts, with citations required and uncertainty allowed. Every request is traced in Langfuse, so a bad answer can be traced to retrieval or to the model. The gap I am honest about: there is no retrieval benchmark yet &mdash; no gold question set, so recall and citation precision are not measured. Building that harness is the next step.</p>
+                        <p><a href="projects/multi-agent-rag.html" class="btn btn-outline-primary btn-sm">Read the full analysis</a> <a href="https://github.com/Danselem/saao-arxiv-paper" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm">GitHub</a></p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -195,39 +247,55 @@
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
+                        <p>More builds: <a href="projects/etlflow.html">ETLFlow (Airflow + Spark)</a> &middot; <a href="projects/iowa-liquor.html">Iowa liquor analytics</a> &middot; <a href="projects.html">all projects</a>.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /Selected Work -->
+
+              <!-- Tools -->
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Tools I actually use</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-text">
+                        <p>Python &middot; PyTorch &middot; Hugging Face &middot; Docker &middot; Airflow &middot; Postgres. Spark and Kubernetes when the problem needs them.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /Tools -->
+
+              <!-- Experience -->
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="p-10"></div>
+                  <div class="block-title">
+                    <h2>Where I have worked</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                  <div class="info-list-w-icon">
+                    <div class="info-block-w-icon">
+                      <div class="ci-text">
                         <ul>
-                          <li>
-                            <strong>Machine Learning Engineer (Consultant, Part-time) — Jan 2025–Present, Cape Town.</strong>
-                            Design and deliver RAG and fine-tuning (LoRA/PEFT) pipelines for production AI
-                            applications, spanning embedding ingestion, vector search, and response generation;
-                            build conversational and speech AI including multilingual and low-resource use cases
-                            from dataset curation through evaluation; containerize and deploy with Docker and
-                            CI/CD (GitHub Actions) across AWS and GCP to monitored cloud-hosted inference.
-                            <!-- TODO(CV): add per-bullet metrics — RAG corpus size + vector store (Qdrant OR OpenSearch, one); fine-tuned model(s) + eval set + baseline→result or omit honestly; actual deploy target (ECR/EC2 vs Cloud Run); speech dataset hours. -->
-                          </li>
-                          <li>
-                            <strong>Machine Learning Engineer (Research Intern, Part-time, Remote) — Jun 2023–Dec 2024, Nabafat AI, US.</strong>
-                            Built and optimised ML systems for NLP, computer vision, and LLM applications;
-                            developed LoRA/PEFT fine-tuning pipelines across foundation models; implemented
-                            RAG chatbots over vector databases and embedding pipelines; deployed with Docker,
-                            AWS ECR, and CI/CD; improved data quality through large-scale data engineering.
-                            <!-- TODO(CV): confirm part-time tag; add model names, corpus scale, deploy target, one eval metric. -->
-                          </li>
-                          <li>
-                            <strong>Research Data Scientist / Machine Learning Engineer — Feb 2021–Sep 2024, SAAO, Cape Town.</strong>
-                            Built ML classification and cross-matching models over 500K+ records and
-                            multi-catalogue datasets; designed scalable astronomical data-processing and
-                            feature-extraction pipelines; shipped reproducible ML workflows supporting
-                            peer-reviewed publications.
-                            <!-- TODO(CV): retitle to PhD Researcher (SAAO Prize Scholar) Apr 2021–Jul 2026 unless a separate contract existed; current title contradicts postdoc CV. Proven numbers to reuse: 443,455 × Gaia DR3, Monte Carlo null model, 94% @2", 629 counterparts (MNRAS 2025). -->
-                          </li>
-                          <li>
-                            <strong>Machine Learning Intern — Sep 2020–Jan 2021, Ubenwa Health (Remote, Canada).</strong>
-                            Built clinical-audio feature-extraction and preprocessing pipelines; developed and
-                            evaluated Scikit-learn and XGBoost classifiers; improved data quality through
-                            feature engineering and cleaning.
-                            <!-- TODO(CV): add dataset scale + classifier metric (F1/AUC baseline→result). -->
-                          </li>
+                          <li>Machine Learning Engineer (consultant, part-time) &mdash; Jan 2025 to present, Cape Town.</li>
+                          <li>Machine Learning Engineer (research intern, part-time) &mdash; Jun 2023 to Dec 2024, Nabafat AI.</li>
+                          <li>Research Data Scientist / Machine Learning Engineer &mdash; Feb 2021 to Sep 2024, SAAO.</li>
+                          <li>Machine Learning Intern &mdash; Sep 2020 to Jan 2021, Ubenwa Health.</li>
                         </ul>
                       </div>
                     </div>
@@ -235,156 +303,6 @@
                 </div>
               </div>
               <!-- /Experience -->
-
-              <!-- Flagship Builds -->
-              <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                  <div class="p-10"></div>
-                  <div class="block-title">
-                    <h2>Flagship Builds</h2>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-xs-12 col-md-12" style="margin-bottom: 25px;">
-                  <div class="card" style="padding: 25px; border: 1px solid #eee; border-radius: 6px; background-color: #fafafa;">
-                    <span style="color: #f75023; font-weight: bold; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px;">Flagship · RAG / Agents</span>
-                    <h3 style="color: #f75023; margin-top: 8px; margin-bottom: 12px; font-weight: 600;">Scientific Literature RAG with Hybrid Search</h3>
-                    <p style="font-size: 1.05em; line-height: 1.6; margin-bottom: 15px;">
-                      End-to-end RAG over scientific literature and catalogues: ETL from external APIs,
-                      papers, and structured datasets; embedding ingestion with MinIO/Postgres backing;
-                      retrieval over OpenSearch with semantic search; LLM synthesis via Ollama-backed
-                      services; containerized with Docker for reproducible deployment.
-                    </p>
-                    <p style="font-size: 0.9em; color: #555;"><strong>Stack:</strong> Python · APIs · ETL · RAG · MinIO · Postgres · Ollama · OpenSearch · Docker</p>
-                    <p><a href="projects/multi-agent-rag.html" class="btn btn-primary btn-sm">Read More</a> <a href="https://github.com/Danselem/saao-arxiv-paper" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm">GitHub</a></p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-xs-12 col-sm-12" style="margin-bottom: 20px;">
-                  <div class="card" style="padding: 20px; border: 1px solid #eee; border-radius: 6px; min-height: 280px;">
-                    <h4 style="color: #f75023; font-weight: 600; margin-bottom: 10px;">Speech AI: Whisper Fine-Tuning + Low-Resource Accent Data</h4>
-                    <p style="line-height: 1.5; margin-bottom: 15px;">
-                      End-to-end Whisper-small fine-tuning for medical-domain speech: data preparation,
-                      three-way split, W&amp;B-tracked training, and a held-out evaluation harness
-                      (11.0% &rarr; 5.4% normalized WER on 500 untouched clips). Paired with curated
-                      Nigerian-English accent audio datasets for low-resource ASR.
-                    </p>
-                    <p style="font-size: 0.85em; color: #555;"><strong>Stack:</strong> PyTorch · Hugging Face · Whisper ASR · Weights &amp; Biases · Python</p>
-                    <p><a href="projects/whisper-medical.html" class="btn btn-primary btn-sm">Read More</a> <a href="projects/ng-accent-audio.html" class="btn btn-outline-primary btn-sm">Accent Data</a></p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                  <div class="info-list-w-icon">
-                    <div class="info-block-w-icon">
-                      <div class="ci-text">
-                        <p>
-                          <strong>Supporting proof of scale:</strong> MeerKAT &times; Gaia entity resolution —
-                          443,455 radio sources against a 1.8B-record catalog with Monte Carlo false-positive
-                          modelling (94% reliability at 2&Prime;, 629 counterparts).
-                          <a href="projects/radio-star-discovery.html">Read full analysis</a>.
-                        </p>
-                        <p>
-                          More builds: <a href="projects/etlflow.html">ETLFlow (Airflow + Spark)</a> ·
-                          <a href="projects.html">all projects</a>.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /Flagship Builds -->
-
-              <!-- Shipped-With Stack -->
-              <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                  <div class="p-10"></div>
-                  <div class="block-title">
-                    <h2>Shipped-With Stack</h2>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                  <div class="info-list-w-icon">
-                    <div class="info-block-w-icon">
-                      <div class="ci-text">
-                        <ul>
-                          <li><strong>ML / DL:</strong> Python · PyTorch · Scikit-learn · XGBoost · Hugging Face Transformers · Unsloth · NVIDIA NeMo Speech</li>
-                          <li><strong>LLMs &amp; Agents:</strong> LangChain / LangGraph · Strands Agents · Agno · Prompt engineering · Embeddings · Vector search (FAISS · Pinecone · OpenSearch)</li>
-                          <li><strong>MLOps &amp; Deploy:</strong> Docker · Kubernetes · CI/CD (GitHub Actions) · Model serving · AWS (SageMaker, ECR, Bedrock) · GCP (Vertex AI, BigQuery)</li>
-                          <li><strong>Data:</strong> SQL · Spark / Dask · MLflow · Prefect · DVC · Terraform · Evidently · Grafana</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /Shipped-With Stack -->
-
-              <!-- Trainings -->
-              <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                  <div class="p-10"></div>
-                  <div class="block-title">
-                    <h2>Professional Trainings</h2>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-xs-12 col-sm-4">
-                  <div class="info-list-w-icon">
-                    <div class="info-block-w-icon">
-                      <div class="ci-text">
-                        <h4>Machine Learning &amp; MLOps</h4>
-                        <ul>
-                          <li>MLOps Zoomcamp (DataTalks.Club)</li>
-                          <li>Machine Learning Zoomcamp (DataTalks.Club)</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xs-12 col-sm-4">
-                  <div class="info-list-w-icon">
-                    <div class="info-block-w-icon">
-                      <div class="ci-text">
-                        <h4>Deep Learning &amp; Data Science</h4>
-                        <ul>
-                          <li>Getting Started with Deep Learning (NVIDIA)</li>
-                          <li>Accelerating End-to-End Data Science Workflows (NVIDIA)</li>
-                          <li>Fundamentals of Accelerated Data Science (NVIDIA)</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xs-12 col-sm-4">
-                  <div class="info-list-w-icon">
-                    <div class="info-block-w-icon">
-                      <div class="ci-text">
-                        <h4>LLMs &amp; Generative AI</h4>
-                        <ul>
-                          <li>Building RAG Agents with LLMs (NVIDIA)</li>
-                          <li>Conversational AI Applications (NVIDIA)</li>
-                          <li>Rapid Application Development with LLMs (NVIDIA)</li>
-                          <li>Introduction to NVIDIA NIM Microservices (NVIDIA)</li>
-                        </ul>
-                        <!-- TODO(CV): reconcile with postdoc CV (7 items) and homepage (adds Disaster Monitoring 2024). Master list = this 9 + 2026 workshops below; drop or certificate-prove the rest everywhere. -->
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /Trainings -->
 
               <!-- Education -->
               <div class="row">
@@ -395,17 +313,15 @@
                   </div>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-xs-12 col-sm-12">
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
                         <ul>
-                          <li><strong>PhD Astronomy, UCT — Expected 2026.</strong> Thesis: Multiwavelength Study of the SARAO MeerKAT Galactic Plane Point Sources.</li>
-                          <!-- TODO(CV): align to postdoc CV — Thesis Submitted Jul 2026; MSc Dec 2019 (this page mirrors AI CV's MSc 2020 for now to stay 1:1 with that PDF). -->
-                          <li><strong>MSc Physics &amp; Astronomy, 2020, University of Nigeria, Nsukka.</strong></li>
-                          <li><strong>BSc Physics &amp; Astronomy, 2014, University of Nigeria, Nsukka.</strong></li>
+                          <li>PhD Astronomy, University of Cape Town &mdash; thesis submitted July 2026: <em>Multiwavelength Study of the SARAO MeerKAT Galactic Plane Point Sources</em>.</li>
+                          <li>MSc Physics and Astronomy, University of Nigeria, Nsukka, 2019.</li>
+                          <li>BSc Physics and Astronomy, University of Nigeria, Nsukka, 2014.</li>
                         </ul>
                       </div>
                     </div>
@@ -419,11 +335,10 @@
                 <div class="col-xs-12 col-sm-12">
                   <div class="p-10"></div>
                   <div class="block-title">
-                    <h2>Leadership &amp; Community</h2>
+                    <h2>Training and community</h2>
                   </div>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-xs-12 col-sm-12">
                   <div class="info-list-w-icon">
@@ -431,9 +346,8 @@
                       <div class="ci-text">
                         <ul>
                           <li>Arize AI Ambassador; Tavily AI Ambassador.</li>
-                          <li>BRICS / IDIA Data Analytics Trainer (2025 &amp; 2026); Mentor, DARA Big Data Africa School; Mentor, SARAO Open Data for Social Impact Challenge.</li>
+                          <li>BRICS / IDIA Data Analytics Trainer (2025 and 2026); mentor, DARA Big Data Africa School; mentor, SARAO Open Data for Social Impact Challenge.</li>
                         </ul>
-                        <!-- TODO(CV): verify ambassador roles are current; add Judge 6th Big Data Africa School Oct 2026 + Royal Society Grant Mar 2026 + IAIFI/Harvard AstroAI/SKA-AI 2026 from postdoc CV — strongest AI-adjacent proof, missing here. -->
                       </div>
                     </div>
                   </div>
@@ -450,16 +364,14 @@
                   </div>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-xs-12 col-sm-12">
                   <div class="info-list-w-icon">
                     <div class="info-block-w-icon">
                       <div class="ci-text">
-                        <p>
-                          Open to AI Engineer roles (remote / relocation). Cape Town, South Africa.
-                          Contact: <a href="mailto:danoegbo@gmail.com">danoegbo@gmail.com</a> ·
-                          <a href="https://github.com/Danselem" target="_blank" rel="noopener noreferrer">GitHub</a> ·
+                        <p>Open to AI engineering roles (remote or relocation). Cape Town, South Africa.<br>
+                          <a href="mailto:danoegbo@gmail.com">danoegbo@gmail.com</a> &middot;
+                          <a href="https://github.com/Danselem" target="_blank" rel="noopener noreferrer">GitHub</a> &middot;
                           <a href="https://www.linkedin.com/in/egbodaniel/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                         </p>
                         <p><a href="Daniel_Egbo_CV_AI.pdf" target="_blank" class="btn btn-primary">Download AI CV</a></p>
